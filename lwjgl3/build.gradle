@@ -33,6 +33,7 @@ dependencies {
 	implementation "com.github.crykn.guacamole:gdx-desktop:$guacamoleVersion"
 	implementation "de.tomgrill.gdxdialogs:gdx-dialogs-desktop:$dialogsVersion"
 	implementation project(':core')
+	implementation project(':gdx-lava')
 }
 
 def os = System.properties['os.name'].toLowerCase()
