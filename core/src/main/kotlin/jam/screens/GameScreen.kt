@@ -1,14 +1,17 @@
 package jam.screens
 
 import com.badlogic.ashley.core.Engine
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch
+import com.badlogic.gdx.math.MathUtils.norm
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import hoHoHo
 import jam.core.ChristmasGame
 import jam.core.GameSettings
 import ktx.app.KtxInputAdapter
 import ktx.app.KtxScreen
+import ktx.app.clearScreen
 
 class GameScreen(
     private val game: ChristmasGame,
@@ -22,12 +25,15 @@ class GameScreen(
         super.hide()
     }
 
+    private val bgColor = "6D6E75".toColor()
+
     override fun pause() {
         super.pause()
     }
 
     override fun render(delta: Float) {
-        engine.update(delta)
+        clearScreen(bgColor.r, bgColor.g, bgColor.b)
+        //engine.update(delta)
     }
 
     override fun resize(width: Int, height: Int) {
@@ -54,4 +60,12 @@ class GameScreen(
 //
 //        createPlayer(map.points[PointType.PlayerStart]!!.random(), follow = true)
     }
+}
+
+fun String.toColor(): Color {
+    val parts = this.chunked(2)
+    val r = norm(0f, 255f, Integer.decode("0x${parts[0]}").toFloat())
+    val g = norm(0f, 255f, Integer.decode("0x${parts[1]}").toFloat())
+    val b = norm(0f, 255f, Integer.decode("0x${parts[2]}").toFloat())
+    return Color(r, g, b, 1f)
 }

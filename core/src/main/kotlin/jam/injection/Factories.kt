@@ -2,6 +2,8 @@ import com.badlogic.gdx.physics.box2d.BodyDef
 import eater.core.engine
 import eater.core.world
 import eater.ecs.ashley.components.*
+import jam.ecs.components.TextureRegionComponent
+import jam.injection.assets
 import ktx.ashley.entity
 import ktx.ashley.with
 import ktx.box2d.body
@@ -147,6 +149,9 @@ fun hoHoHo(christmasCheer: Float = 100f, follow: Boolean = false) {
         }
         with<TransformComponent>()
         with<Player>()
+        with<TextureRegionComponent> {
+            textureRegion = assets().sleighTextureRegion
+        }
     }
 }
 //
