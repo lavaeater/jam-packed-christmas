@@ -124,12 +124,13 @@ fun hoHoHo(christmasCheer: Float = 100f, follow: Boolean = false) {
                 userData = this@entity.entity
                 position.set(0f, 0f)
                 // angle = 90f * MathUtils.degreesToRadians
-                angularDamping = 1f
+                angularDamping = 0.8f
+                linearDamping = 0.8f
                 fixedRotation = false
 
 
                 box(2.5f, 4f) {
-                    density = 0.001f
+                    density = 0.0001f
                     filter {
                         categoryBits = Categories.santa
                         maskBits = Categories.whatSantaCollidesWith
@@ -167,7 +168,8 @@ fun hoHoHo(christmasCheer: Float = 100f, follow: Boolean = false) {
                 userData = this@entity.entity
                 position.set(0f,0f)
                // angle = 90f * MathUtils.degreesToRadians
-                angularDamping = 0f
+                angularDamping = 0.8f
+                linearDamping = 0.8f
                 fixedRotation= false
 
                 box(2.5f, 4f) {

@@ -32,10 +32,10 @@ class ChristmasMapManager {
     val allMapEntities = mutableListOf<Entity>()
     fun createMap() {
         val randomAngleRange = (0f..MathUtils.PI2)
-        val randomDistanceRange = 5f..1000f
+        val randomDistanceRange = 5f..10000f
         val randomVector = vec2(1f, 0f)
         //Test a 1000 points first
-        (1..1000).forEach { _ ->
+        (1..10000).forEach { _ ->
             randomVector.rotateRad(randomAngleRange.random())
             randomVector.scl(randomDistanceRange.random())
             allMapEntities.add(createTerrainThingAt(Vector2.Zero + randomVector))
