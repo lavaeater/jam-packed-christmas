@@ -85,7 +85,7 @@ object Context:InjectionContext() {
             addSystem(UpdateActionsSystem())
             addSystem(AshleyAiSystem())
 //            addSystem(EnsureEntitySystem(EnsureEntityDef(allOf(Human::class).get(), 15) { createHuman() }))
-            addSystem(RenderSystem())
+            addSystem(RenderSystem(inject(), inject(), inject(), inject()))
 //            addSystem(Box2dDebugRenderSystem(inject(), inject()))
             addSystem(UpdateMemorySystem())
             addSystem(LogSystem())

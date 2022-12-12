@@ -15,7 +15,7 @@ class RenderSystem(private val batch: PolygonSpriteBatch,
 ): EntitySystem() {
     override fun update(deltaTime: Float) {
 
-        camera.rotate()
+//        camera.rotate()
 
     }
 }

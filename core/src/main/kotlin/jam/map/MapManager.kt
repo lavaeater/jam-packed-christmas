@@ -1,4 +1,4 @@
-package dark.map
+package jam.map
 
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
@@ -11,6 +11,21 @@ import ktx.box2d.filter
 import ktx.math.vec2
 
 class RecursiveCounter(var counter: Int)
+
+class ChristmasMapManager {
+    val world by lazy { world() }
+
+    /**
+     * I don't think I want a tile-based map this time around.
+     *
+     * I want things to be free and flowy.
+     *
+     * So, do we accomplish that by generating tons of entities (yes)
+     * that need to be rendered separately? Yes.
+     *
+     *
+     */
+}
 
 class MapManager {
     /**
