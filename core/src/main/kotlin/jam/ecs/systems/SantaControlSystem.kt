@@ -2,51 +2,33 @@ package jam.ecs.systems
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input.Keys
-import com.badlogic.gdx.graphics.OrthographicCamera
-import eater.ecs.ashley.components.BodyControl
-import eater.ecs.ashley.components.KeyboardAndMouseInput
-import eater.ecs.ashley.components.Remove
-import eater.ecs.ashley.components.TransformComponent
+import eater.ecs.ashley.components.*
+import eater.injection.InjectionContext.Companion.inject
 import ktx.ashley.allOf
-import ktx.ashley.exclude
+import ktx.math.times
 import ktx.math.vec2
-import ktx.math.vec3
+import space.earlygrey.shapedrawer.ShapeDrawer
 
-class SantaControlSystem(private val camera: OrthographicCamera) :
-    IteratingSystem(
-        allOf(
-            BodyControl::class,
-            KeyboardAndMouseInput::class,
-            TransformComponent::class
-        ).exclude(Remove::class).get()
-    ) {
-
-    private val mouseWorld3 = vec3()
-    private val mouseWorld = vec2()
-
-    val walkDirection = vec2()
-        get() {
-            field.x = if(Gdx.input.isKeyPressed(Keys.A)) -1f else if(Gdx.input.isKeyPressed(Keys.D)) 1f else 0f
-            field.y = if(Gdx.input.isKeyPressed(Keys.W)) 1f else if(Gdx.input.isKeyPressed(Keys.S)) -1f else 0f
-            return field.nor()
-            }
-
+class SantaControlSystem: IteratingSystem(allOf(Box2d::class, BodyControl::class, Player::class, TransformComponent::class).get()) {
+    private val dragForceMagnitudeFactor = 0.25f
+    private val forceDirectionVector = vec2(1f, 0f)
+    private val shapeDrawer by lazy { inject<ShapeDrawer>()}
     override fun processEntity(entity: Entity, deltaTime: Float) {
-        unprojectMouse()
-        val bodyControl = BodyControl.get(entity)
-        val transform = TransformComponent.get(entity)
-        bodyControl.aimDirection.set(mouseWorld).sub(transform.position).nor()
-        bodyControl.moveDirection.set(walkDirection)
-        bodyControl.currentForce = bodyControl.maxForce * walkDirection.len()
+        val body = Box2d.get(entity).body
+        val control = BodyControl.get(entity)
+        val direction = TransformComponent.get(entity).direction
 
-    }
+//        body.applyForce(control.moveDirection * control.currentForce, body.worldCenter, true)
 
-    private fun unprojectMouse() {
-        mouseWorld3.x = Gdx.input.x.toFloat()
-        mouseWorld3.y = Gdx.input.y.toFloat()
-        camera.unproject(mouseWorld3)
-        mouseWorld.set(mouseWorld3.x, mouseWorld3.y)
+
+        //        body.angularVelocity = control.directionVector.x * 2.5f
+        forceDirectionVector.set(direction)
+        body.applyForce(forceDirectionVector * control.directionVector.y * 10000f * deltaTime, body.worldCenter, true)
+        body.applyTorque(control.directionVector.x * 1000f * deltaTime, true)
+
+//        val forward = body.linearVelocity
+//        val speed = forward.len()
+//        val dragForceMagnitude = -dragForceMagnitudeFactor * speed
+//        body.applyForce(forward.scl(dragForceMagnitude), body.worldCenter, true)
     }
 }

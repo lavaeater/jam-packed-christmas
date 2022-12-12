@@ -11,7 +11,7 @@ object Categories {
 
     val whatBlobsCollideWith = naughty or food or walls or santa or lights or ropes
     val whatFoodCollidesWith = naughty
-    val whatHumansCollideWith = naughty or santa or walls or lights or ropes
+    val whatSantaCollidesWith = naughty or santa or walls or lights or ropes
     val whatWallsCollideWith = naughty or santa or ropes
     val whatLightsCollideWith = naughty or santa or walls
     val whatRopesCollideWith = naughty or santa or walls

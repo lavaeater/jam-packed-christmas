@@ -12,7 +12,9 @@ import eater.ecs.ashley.systems.*
 import eater.injection.InjectionContext
 import jam.core.ChristmasGame
 import jam.core.GameSettings
+import jam.ecs.systems.ChristmasCameraFollowSystem
 import jam.ecs.systems.RenderSystem
+import jam.ecs.systems.SantaControlSystem
 import jam.screens.SplashScreen
 import jam.screens.GameOverScreen
 import jam.screens.GameScreen
@@ -53,7 +55,7 @@ object Context:InjectionContext() {
             })
             bindSingleton(ShapeDrawer(inject<PolygonSpriteBatch>() as Batch, shapeDrawerRegion))
             bindSingleton(getEngine(gameSettings))
-            bindSingleton(Assets())
+            bindSingleton(Assets(inject()))
             //bindSingleton(HackLightEngine(0.01f, 0.01f, 0.01f, 0.1f))
             bindSingleton(SplashScreen(inject()))
             bindSingleton(GameSelectScreen(inject()))
@@ -74,10 +76,11 @@ object Context:InjectionContext() {
     private fun getEngine(gameSettings: GameSettings): Engine {
         return PooledEngine().apply {
             addSystem(RemoveEntitySystem())
-            addSystem(CameraAndMapSystem(inject(), 0.75f, inject(),gameSettings.AspectRatio))
+            //addSystem(CameraAndMapSystem(inject(), 0.75f, inject(),gameSettings.AspectRatio))
             addSystem(Box2dUpdateSystem(gameSettings.TimeStep, gameSettings.VelIters, gameSettings.PosIters))
-            addSystem(BodyControlSystem())
-            addSystem(KeyboardInputSystem(inject()))
+            addSystem(ChristmasCameraFollowSystem(inject(), 0.1f))
+            addSystem(SantaControlSystem())
+            addSystem(KeyboardInputSystem(inject(), invertX = true, invertY = false))
             addSystem(FlashlightDirectionSystem())
             addSystem(LightPositionUpdateSystem())
             addSystem(SteerSystem())
@@ -85,7 +88,7 @@ object Context:InjectionContext() {
             addSystem(UpdateActionsSystem())
             addSystem(AshleyAiSystem())
 //            addSystem(EnsureEntitySystem(EnsureEntityDef(allOf(Human::class).get(), 15) { createHuman() }))
-            addSystem(RenderSystem(inject(), inject(), inject(), inject()))
+            addSystem(RenderSystem(inject(), inject(), inject(), inject(), false))
 //            addSystem(Box2dDebugRenderSystem(inject(), inject()))
             addSystem(UpdateMemorySystem())
             addSystem(LogSystem())

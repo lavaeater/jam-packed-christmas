@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport
 import hoHoHo
 import jam.core.ChristmasGame
 import jam.core.GameSettings
+import jam.map.ChristmasMapManager
 import ktx.app.KtxInputAdapter
 import ktx.app.KtxScreen
 import ktx.app.clearScreen
@@ -33,7 +34,7 @@ class GameScreen(
 
     override fun render(delta: Float) {
         clearScreen(bgColor.r, bgColor.g, bgColor.b)
-        //engine.update(delta)
+        engine.update(delta)
     }
 
     override fun resize(width: Int, height: Int) {
@@ -46,8 +47,12 @@ class GameScreen(
         super.resume()
     }
 
+    val mapManager = ChristmasMapManager()
+
     override fun show() {
-        hoHoHo()
+        mapManager.createMap()
+        hoHoHo(100f, true)
+
 //        val map = createMap("two")
 //        InjectionContext.context.bindSingleton(map)
 //        BlobGrouper.blobPoints = map.points[PointType.BlobStart]!!

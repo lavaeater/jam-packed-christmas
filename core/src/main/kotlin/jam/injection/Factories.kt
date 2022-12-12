@@ -1,14 +1,15 @@
+import com.badlogic.gdx.math.MathUtils
+import com.badlogic.gdx.math.MathUtils.degreesToRadians
 import com.badlogic.gdx.physics.box2d.BodyDef
 import eater.core.engine
 import eater.core.world
 import eater.ecs.ashley.components.*
-import jam.ecs.components.TextureRegionComponent
+import jam.ecs.components.SpriteComponent
 import jam.injection.assets
 import ktx.ashley.entity
 import ktx.ashley.with
-import ktx.box2d.body
-import ktx.box2d.circle
-import ktx.box2d.filter
+import ktx.box2d.*
+import ktx.math.vec2
 
 //fun createLights(points: List<Vector2>) {
 //    for (point in points)
@@ -116,6 +117,32 @@ sealed class ChristmasProp(name: String):PropName(name) {
 }
 
 fun hoHoHo(christmasCheer: Float = 100f, follow: Boolean = false) {
+    val carriageEntity = engine().entity {
+        with<Box2d> {
+            body = world().body {
+                type = BodyDef.BodyType.DynamicBody
+                userData = this@entity.entity
+                position.set(0f, 0f)
+                // angle = 90f * MathUtils.degreesToRadians
+                angularDamping = 1f
+                fixedRotation = false
+
+
+                box(2.5f, 4f) {
+                    density = 0.001f
+                    filter {
+                        categoryBits = Categories.santa
+                        maskBits = Categories.whatSantaCollidesWith
+                    }
+                }
+            }
+        }
+        with<TransformComponent>()
+        with<SpriteComponent> {
+            sprite = assets().sleighSprite
+        }
+    }
+
     engine().entity {
         with<Human>()
         with<NewProp> {
@@ -139,18 +166,32 @@ fun hoHoHo(christmasCheer: Float = 100f, follow: Boolean = false) {
                 type = BodyDef.BodyType.DynamicBody
                 userData = this@entity.entity
                 position.set(0f,0f)
-                circle(1.0f) {
+               // angle = 90f * MathUtils.degreesToRadians
+                angularDamping = 0f
+                fixedRotation= false
+
+                box(2.5f, 4f) {
+                    density = 0.1f
                     filter {
                         categoryBits = Categories.santa
-                        maskBits = Categories.whatHumansCollideWith
+                        maskBits = Categories.whatSantaCollidesWith
                     }
+                }
+            }.apply {
+                revoluteJointWith(Box2d.get(carriageEntity).body) {
+                    localAnchorA.set(0f, -3f)
+                    localAnchorB.set(0f, 3f)
+                    collideConnected = false
+                    enableLimit = true
+                    lowerAngle = -60f * degreesToRadians
+                    upperAngle = 60f * degreesToRadians
                 }
             }
         }
         with<TransformComponent>()
         with<Player>()
-        with<TextureRegionComponent> {
-            textureRegion = assets().sleighTextureRegion
+        with<SpriteComponent> {
+            sprite = assets().deerSprite
         }
     }
 }
