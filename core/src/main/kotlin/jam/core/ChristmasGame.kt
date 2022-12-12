@@ -1,38 +1,37 @@
 package jam.core
 
-import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.graphics.Texture.TextureFilter.Linear
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import ktx.app.KtxGame
-import ktx.app.KtxScreen
-import ktx.app.clearScreen
-import ktx.assets.disposeSafely
-import ktx.assets.toInternalFile
+import eater.core.MainGame
+import eater.injection.InjectionContext.Companion.inject
+import jam.core.injection.Context
+import jam.core.screens.SplashScreen
+import jam.core.screens.GameOverScreen
+import jam.core.screens.GameScreen
+import jam.core.screens.GameSelectScreen
 import ktx.async.KtxAsync
-import ktx.graphics.use
 
-class ChristmasGame : KtxGame<KtxScreen>() {
+class ChristmasGame : MainGame() {
     override fun create() {
         KtxAsync.initiate()
 
-        addScreen(FirstScreen())
-        setScreen<FirstScreen>()
+        Context.initialize(this)
+
+        addScreen(inject<SplashScreen>())
+        addScreen(inject<GameSelectScreen>())
+        addScreen(inject<GameOverScreen>())
+        addScreen(inject<GameScreen>())
+        setScreen<SplashScreen>()
+    }
+
+    fun goToGameSelect() {
+        setScreen<GameSelectScreen>()
+    }
+
+    fun goToGameScreen() {
+        setScreen<GameScreen>()
+    }
+
+    fun goToGameOver() {
+        setScreen<GameOverScreen>()
     }
 }
 
-class FirstScreen : KtxScreen {
-    private val image = Texture("logo.png".toInternalFile(), true).apply { setFilter(Linear, Linear) }
-    private val batch = SpriteBatch()
-
-    override fun render(delta: Float) {
-        clearScreen(red = 0.7f, green = 0.7f, blue = 0.7f)
-        batch.use {
-            it.draw(image, 100f, 160f)
-        }
-    }
-
-    override fun dispose() {
-        image.disposeSafely()
-        batch.disposeSafely()
-    }
-}
