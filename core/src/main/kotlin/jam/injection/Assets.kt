@@ -1,4 +1,4 @@
-package jam.core.injection
+package jam.injection
 
 import eater.injection.InjectionContext.Companion.inject
 import ktx.assets.DisposableContainer

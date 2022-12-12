@@ -1,4 +1,4 @@
-package jam.core.injection
+package jam.injection
 
 import box2dLight.RayHandler
 import com.badlogic.ashley.core.Engine
@@ -12,10 +12,11 @@ import eater.ecs.ashley.systems.*
 import eater.injection.InjectionContext
 import jam.core.ChristmasGame
 import jam.core.GameSettings
-import jam.core.screens.SplashScreen
-import jam.core.screens.GameOverScreen
-import jam.core.screens.GameScreen
-import jam.core.screens.GameSelectScreen
+import jam.ecs.systems.RenderSystem
+import jam.screens.SplashScreen
+import jam.screens.GameOverScreen
+import jam.screens.GameScreen
+import jam.screens.GameSelectScreen
 import ktx.assets.disposeSafely
 import ktx.box2d.createWorld
 import space.earlygrey.shapedrawer.ShapeDrawer
@@ -84,7 +85,7 @@ object Context:InjectionContext() {
             addSystem(UpdateActionsSystem())
             addSystem(AshleyAiSystem())
 //            addSystem(EnsureEntitySystem(EnsureEntityDef(allOf(Human::class).get(), 15) { createHuman() }))
-//            addSystem(RenderSystem(inject(), inject(), inject(), inject()))
+            addSystem(RenderSystem())
 //            addSystem(Box2dDebugRenderSystem(inject(), inject()))
             addSystem(UpdateMemorySystem())
             addSystem(LogSystem())

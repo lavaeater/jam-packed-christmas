@@ -1,25 +1,12 @@
-import box2dLight.ConeLight
-import box2dLight.PointLight
-import box2dLight.RayHandler
-import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.g2d.TextureRegion
-import com.badlogic.gdx.math.Rectangle
-import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.BodyDef
-import eater.ai.ashley.AiComponent
-import eater.ai.steering.box2d.Box2dSteerable
 import eater.core.engine
 import eater.core.world
 import eater.ecs.ashley.components.*
-import eater.injection.InjectionContext.Companion.inject
 import ktx.ashley.entity
 import ktx.ashley.with
 import ktx.box2d.body
-import ktx.box2d.box
 import ktx.box2d.circle
 import ktx.box2d.filter
-import ktx.log.info
-import ktx.math.vec2
 
 //fun createLights(points: List<Vector2>) {
 //    for (point in points)
@@ -121,18 +108,23 @@ import ktx.math.vec2
 //    }
 //}
 //
-//fun createPlayer(at: Vector2, health: Float = 100f, follow: Boolean = false) {
-//    engine().entity {
-//        with<Human>()
-//        with<PropsAndStuff> {
-//            props.add(Prop.FloatProp.Health(health))
-//        }
-//        if (follow)
-//            with<CameraFollow>()
-//        with<BodyControl> {
-//            maxForce = 1000f
-//        }
-//        with<KeyboardAndMouseInput>()
+
+sealed class ChristmasProp(name: String):PropName(name) {
+    object ChristmasCheer : ChristmasProp("Cheer")
+}
+
+fun hoHoHo(christmasCheer: Float = 100f, follow: Boolean = false) {
+    engine().entity {
+        with<Human>()
+        with<NewProp> {
+            props[ChristmasProp.ChristmasCheer] = CoolProp.FloatProperty(ChristmasProp.ChristmasCheer)
+        }
+        if (follow)
+            with<CameraFollow>()
+        with<BodyControl> {
+            maxForce = 1000f
+        }
+        with<KeyboardAndMouseInput>()
 //        with<Light> {
 //            light = PointLight(inject<RayHandler>(),8, Color.WHITE, 15f, 0f, 0f)
 //        }
@@ -140,24 +132,23 @@ import ktx.math.vec2
 //            light = ConeLight(inject<RayHandler>(), 8, Color.WHITE,40f, at.x, at.y, 0f, 30f)
 //            offset = 5f
 //        }
-//        with<Box2d> {
-//            body = world().body {
-//                type = BodyDef.BodyType.DynamicBody
-//                userData = this@entity.entity
-//                position.set(at)
-//                circle(1.0f) {
-//                    filter {
-//                        categoryBits = Categories.human
-//                        maskBits = Categories.whatHumansCollideWith
-//                    }
-//                }
-//            }
-//        }
-//        with<TransformComponent>()
-//        with<BlobsCanEatThis>()
-//        with<Player>()
-//    }
-//}
+        with<Box2d> {
+            body = world().body {
+                type = BodyDef.BodyType.DynamicBody
+                userData = this@entity.entity
+                position.set(0f,0f)
+                circle(1.0f) {
+                    filter {
+                        categoryBits = Categories.santa
+                        maskBits = Categories.whatHumansCollideWith
+                    }
+                }
+            }
+        }
+        with<TransformComponent>()
+        with<Player>()
+    }
+}
 //
 //fun createBlob(
 //    at: Vector2,

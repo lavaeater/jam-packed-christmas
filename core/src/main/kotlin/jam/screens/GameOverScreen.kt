@@ -1,4 +1,4 @@
-package jam.core.screens
+package jam.screens
 
 import com.badlogic.gdx.graphics.Texture
 import eater.core.MainGame
@@ -9,7 +9,7 @@ import ktx.assets.disposeSafely
 import ktx.assets.toInternalFile
 import ktx.graphics.use
 
-class SplashScreen(mainGame: ChristmasGame) : BasicScreen(mainGame) {
+class GameOverScreen(mainGame: ChristmasGame) : BasicScreen(mainGame) {
     private val image = Texture("logo.png".toInternalFile(), true).apply { setFilter(
         Texture.TextureFilter.Linear,
         Texture.TextureFilter.Linear

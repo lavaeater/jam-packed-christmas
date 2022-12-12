@@ -58,7 +58,6 @@ dependencies {
 	api "io.github.libktx:ktx-reflect:$ktxVersion"
 	api "io.github.libktx:ktx-scene2d:$ktxVersion"
 	api "io.github.libktx:ktx-style:$ktxVersion"
-	api "net.onedaybeard.artemis:artemis-odb:$artemisOdbVersion"
 	api "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 	api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion"
 	api "space.earlygrey:shapedrawer:$shapeDrawerVersion"

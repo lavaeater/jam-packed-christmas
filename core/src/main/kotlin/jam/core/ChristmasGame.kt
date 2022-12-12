@@ -2,11 +2,11 @@ package jam.core
 
 import eater.core.MainGame
 import eater.injection.InjectionContext.Companion.inject
-import jam.core.injection.Context
-import jam.core.screens.SplashScreen
-import jam.core.screens.GameOverScreen
-import jam.core.screens.GameScreen
-import jam.core.screens.GameSelectScreen
+import jam.injection.Context
+import jam.screens.SplashScreen
+import jam.screens.GameOverScreen
+import jam.screens.GameScreen
+import jam.screens.GameSelectScreen
 import ktx.async.KtxAsync
 
 class ChristmasGame : MainGame() {
@@ -19,7 +19,7 @@ class ChristmasGame : MainGame() {
         addScreen(inject<GameSelectScreen>())
         addScreen(inject<GameOverScreen>())
         addScreen(inject<GameScreen>())
-        setScreen<SplashScreen>()
+        setScreen<GameScreen>()
     }
 
     fun goToGameSelect() {

@@ -1,9 +1,10 @@
-package jam.core.screens
+package jam.screens
 
 import com.badlogic.ashley.core.Engine
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch
 import com.badlogic.gdx.utils.viewport.ExtendViewport
+import hoHoHo
 import jam.core.ChristmasGame
 import jam.core.GameSettings
 import ktx.app.KtxInputAdapter
@@ -40,6 +41,7 @@ class GameScreen(
     }
 
     override fun show() {
+        hoHoHo()
 //        val map = createMap("two")
 //        InjectionContext.context.bindSingleton(map)
 //        BlobGrouper.blobPoints = map.points[PointType.BlobStart]!!
