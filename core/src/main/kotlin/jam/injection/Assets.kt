@@ -1,7 +1,9 @@
 package jam.injection
 
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.NinePatch
 import com.badlogic.gdx.graphics.g2d.Sprite
+import com.ray3k.tenpatch.TenPatchDrawable
 import eater.injection.InjectionContext.Companion.inject
 import jam.core.GameSettings
 import ktx.assets.DisposableContainer
@@ -33,6 +35,9 @@ class Assets(private val gameSettings: GameSettings) : DisposableRegistry by Dis
         flip(false, false)
         scale(gameSettings.MetersPerPixel)
     }
+
+    val houseTopTexture = Texture("city/housetop-1.png".toInternalFile())
+    val houseTenPatch = NinePatch(houseTopTexture,4,4,4,4)
 
     override fun dispose() {
         registeredDisposables.disposeSafely()
