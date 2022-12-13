@@ -106,7 +106,7 @@ class RenderSystem(
     private val needsGifts = allOf(NeedsGifts::class, TransformComponent::class).get()
     private fun renderTargetDirection() {
         val santaClaus = engine.getEntitiesFor(santaFamily).first()
-        val targetHouse = SantaClaus.get(santaClaus).targetHouse
+        val targetHouse = SantaClaus.get(santaClaus).closestHouse
         val position = TransformComponent.get(santaClaus).position
         val targetPosition = if (NeedsGifts.has(targetHouse)) {
             TransformComponent.get(targetHouse).position
@@ -114,7 +114,7 @@ class RenderSystem(
             val housesThatNeedGifts = engine.getEntitiesFor(needsGifts)
             val closestOne = housesThatNeedGifts.minByOrNull { TransformComponent.get(it).position.dst2(position) }
             if (closestOne != null) {
-                SantaClaus.get(santaClaus).targetHouse = closestOne
+                SantaClaus.get(santaClaus).closestHouse = closestOne
                 TransformComponent.get(closestOne).position
             } else vec2()
         }

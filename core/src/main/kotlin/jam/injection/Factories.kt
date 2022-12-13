@@ -8,12 +8,14 @@ import eater.core.world
 import eater.ecs.ashley.components.*
 import eater.injection.InjectionContext.Companion.inject
 import jam.ecs.components.*
-import jam.ecs.systems.RudolfNoseSystem
 import jam.injection.assets
 import ktx.ashley.allOf
 import ktx.ashley.entity
 import ktx.ashley.with
 import ktx.box2d.*
+import ktx.math.minus
+import ktx.math.plus
+import ktx.math.vec2
 
 //fun createLights(points: List<Vector2>) {
 //    for (point in points)
@@ -120,8 +122,49 @@ sealed class ChristmasProp(name: String) : PropName(name) {
     object ChristmasCheer : ChristmasProp("Cheer")
 }
 
+fun throwPresent(from:Vector2, to: Vector2) {
+    val thrownPresent = engine().entity {
+        with<ChristmasPresent>()
+        with<TransformComponent>()
+        with<SpriteComponent> {
+            sprite = assets().presentSprite
+            shadow = true
+        }
+        with<Box2d> {
+            body = world().body {
+                type = BodyDef.BodyType.DynamicBody
+                userData = this@entity.entity
+                position.set(from)
+                angularDamping = 0.8f
+                linearDamping = 0.8f
+                fixedRotation = false
+
+                box(2f, 1f) {
+                    density = 0.01f
+                    filter {
+                        categoryBits = Categories.present
+                        maskBits = Categories.whatPresentsCollideWith
+                    }
+                }
+            }
+        }
+
+    }
+    val body = Box2d.get(thrownPresent).body
+    val impulse = (to - from).nor().scl(0.5f)
+    body.applyLinearImpulse(impulse, body.worldCenter + vec2(1f, 1f), true)
+}
+
 fun hoHoHo(christmasCheer: Float = 100f, follow: Boolean = false) {
     val carriageEntity = engine().entity {
+        with<SantaClaus> {
+            closestHouse =
+                engine().getEntitiesFor(allOf(NeedsGifts::class, TransformComponent::class).get()).minByOrNull {
+                    TransformComponent.get(it).position.dst2(
+                        Vector2.Zero
+                    )
+                }!!
+        }
         with<Box2d> {
             body = world().body {
                 type = BodyDef.BodyType.DynamicBody
@@ -140,6 +183,13 @@ fun hoHoHo(christmasCheer: Float = 100f, follow: Boolean = false) {
                         maskBits = Categories.whatSantaCollidesWith
                     }
                 }
+                circle(15f) {
+                    isSensor = true
+                    filter {
+                        categoryBits = Categories.santasSense
+                        maskBits = Categories.whatSantasSenseCollidesWith
+                    }
+                }
             }
         }
         with<TransformComponent>()
@@ -154,7 +204,7 @@ fun hoHoHo(christmasCheer: Float = 100f, follow: Boolean = false) {
         with<Rudolf>()
         with<RedNose> {
             offset = 2f
-            light = ConeLight(inject(), 16, Color.RED, 100f,0f, 0f,90f, 5f)
+            light = ConeLight(inject(), 16, Color.RED, 100f, 0f, 0f, 90f, 5f)
         }
         with<NewProp> {
             props[ChristmasProp.ChristmasCheer] = CoolProp.FloatProperty(ChristmasProp.ChristmasCheer)
@@ -202,14 +252,6 @@ fun hoHoHo(christmasCheer: Float = 100f, follow: Boolean = false) {
         }
         with<TransformComponent>()
         with<Player>()
-        with<SantaClaus> {
-            targetHouse =
-                engine().getEntitiesFor(allOf(NeedsGifts::class, TransformComponent::class).get()).minByOrNull {
-                    TransformComponent.get(it).position.dst2(
-                        Vector2.Zero
-                    )
-                }!!
-        }
         with<SpriteComponent> {
             sprite = assets().deerSprite
             shadow = true

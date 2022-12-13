@@ -6,9 +6,11 @@ import com.badlogic.gdx.utils.Pool
 import ktx.ashley.mapperFor
 
 class SantaClaus: Component, Pool.Poolable {
-    var targetHouse = Entity()
+    var closestHouse = Entity()
+    val targetHouses = mutableSetOf<Entity>()
     override fun reset() {
-        targetHouse = Entity()
+        closestHouse = Entity()
+        targetHouses.clear()
     }
 
     companion object {

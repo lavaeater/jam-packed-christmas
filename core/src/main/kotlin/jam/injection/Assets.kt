@@ -41,6 +41,11 @@ class Assets(private val gameSettings: GameSettings) : DisposableRegistry by Dis
         scale(gameSettings.MetersPerPixel)
     }
 
+    val presentSprite = Sprite(Texture("present.png".toInternalFile())).apply {
+        setOriginCenter()
+        scale(gameSettings.MetersPerPixel)
+    }
+
     val houseTopTexture = Texture("city/housetop-1.png".toInternalFile())
     val houseNinePatch = NinePatch(houseTopTexture,4,4,4,4)
 

@@ -7,16 +7,15 @@ import com.badlogic.gdx.graphics.*
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.physics.box2d.Contact
+import com.badlogic.gdx.physics.box2d.ContactImpulse
+import com.badlogic.gdx.physics.box2d.ContactListener
+import com.badlogic.gdx.physics.box2d.Manifold
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import eater.ecs.ashley.systems.*
 import eater.injection.InjectionContext
-import eater.ui.LavaHud
 import jam.core.ChristmasGame
 import jam.core.GameSettings
-import jam.ecs.systems.ChristmasCameraFollowSystem
-import jam.ecs.systems.RenderSystem
-import jam.ecs.systems.RudolfNoseSystem
-import jam.ecs.systems.SantaControlSystem
 import jam.screens.SplashScreen
 import jam.screens.GameOverScreen
 import jam.screens.GameScreen
@@ -25,8 +24,30 @@ import jam.ui.WinterHud
 import ktx.assets.disposeSafely
 import ktx.box2d.createWorld
 import space.earlygrey.shapedrawer.ShapeDrawer
+import com.badlogic.ashley.core.Entity
+import eater.physics.bothAreEntities
+import eater.physics.getEntityFor
+import eater.physics.justOneHas
+import jam.ecs.components.House
+import jam.ecs.components.NeedsGifts
+import jam.ecs.components.SantaClaus
+import jam.ecs.systems.*
 
-object Context:InjectionContext() {
+sealed class ContactType {
+    class SantaAndHouse(val santaClaus: Entity, val house: Entity) : ContactType()
+    object Other : ContactType()
+}
+
+fun Contact.getContactType(): ContactType {
+    return if (this.bothAreEntities() && this.justOneHas<SantaClaus>() && this.justOneHas<House>()) ContactType.SantaAndHouse(
+        this.getEntityFor<SantaClaus>(),
+        this.getEntityFor<House>()
+    ) else ContactType.Other
+
+}
+
+
+object Context : InjectionContext() {
     private val shapeDrawerRegion: TextureRegion by lazy {
         val pixmap = Pixmap(1, 1, Pixmap.Format.RGBA8888)
         pixmap.setColor(Color.WHITE)
@@ -51,7 +72,39 @@ object Context:InjectionContext() {
                     inject<OrthographicCamera>() as Camera
                 )
             )
-            bindSingleton(createWorld())
+            bindSingleton(createWorld().apply {
+                setContactListener(object : ContactListener {
+                    override fun beginContact(contact: Contact) {
+                        when (val contactType = contact.getContactType()) {
+                            is ContactType.SantaAndHouse -> {
+                                if (NeedsGifts.has(contactType.house)) {
+                                    val santaComponent = SantaClaus.get(contactType.santaClaus)
+                                    santaComponent.targetHouses.add(contactType.house)
+                                }
+                            }
+
+                            ContactType.Other -> {}
+                        }
+                    }
+
+                    override fun endContact(contact: Contact) {
+                        when (val contactType = contact.getContactType()) {
+                            is ContactType.SantaAndHouse -> {
+                                val santaComponent = SantaClaus.get(contactType.santaClaus)
+                                santaComponent.targetHouses.remove(contactType.house)
+                            }
+                            ContactType.Other -> {}
+                        }
+                    }
+
+                    override fun preSolve(contact: Contact, oldManifold: Manifold?) {
+                    }
+
+                    override fun postSolve(contact: Contact, impulse: ContactImpulse?) {
+                    }
+
+                })
+            })
             bindSingleton(RayHandler(inject()).apply {
                 setAmbientLight(.25f)
                 setBlurNum(3)
@@ -95,6 +148,7 @@ object Context:InjectionContext() {
 //            addSystem(EnsureEntitySystem(EnsureEntityDef(allOf(Human::class).get(), 15) { createHuman() }))
             addSystem(RenderSystem(inject(), inject(), inject(), inject(), inject(), false))
             addSystem(Box2dDebugRenderSystem(inject(), inject()))
+            addSystem(DeliverPresentsSystem())
             addSystem(UpdateMemorySystem())
             addSystem(LogSystem())
         }

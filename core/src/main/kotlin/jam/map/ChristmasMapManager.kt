@@ -50,7 +50,7 @@ class ChristmasMapManager {
             allMapEntities.add(createTerrainThingAt(position))
         }
 
-        (0..10).forEach {
+        (1..10).forEach {
 
             val position = if(it == 0) vec2() else vec2(houseRange.random().toFloat(), houseRange.random().toFloat())
             createCity(position)
