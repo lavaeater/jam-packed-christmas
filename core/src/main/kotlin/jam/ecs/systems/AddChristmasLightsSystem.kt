@@ -14,8 +14,8 @@ class AddChristmasLightsSystem(private val rayHandler: RayHandler):IteratingSyst
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val house = House.get(entity)
         val transform = TransformComponent.get(entity)
-        va
-        for(i in 0..(5..10).random())
-            PointLight(rayHandler, 8, if(i % 2 == 0) Color.RED else Color.GREEN, 5f, )
+//        va
+//        for(i in 0..(5..10).random())
+//            PointLight(rayHandler, 8, if(i % 2 == 0) Color.RED else Color.GREEN, 5f, )
     }
 }
