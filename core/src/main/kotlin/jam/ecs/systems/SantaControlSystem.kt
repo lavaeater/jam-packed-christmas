@@ -23,7 +23,7 @@ class SantaControlSystem :
 
         //        body.applyLinearImpulse(, body.worldCenter, true)
         body.applyForce(forceDirectionVector * control.directionVector.y * 2500f * deltaTime, body.worldCenter, true)
-        if(body.linearVelocity.len2() > 500f)
+        if(body.linearVelocity.len2() > 250f)
             body.applyTorque(control.directionVector.x * 250f * deltaTime, true)
 //        val forward = body.linearVelocity
 //        val speed = forward.len()

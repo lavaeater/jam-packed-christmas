@@ -141,6 +141,7 @@ fun hoHoHo(christmasCheer: Float = 100f, follow: Boolean = false) {
         with<TransformComponent>()
         with<SpriteComponent> {
             sprite = assets().sleighSprite
+            shadow = true
         }
     }
 
@@ -194,6 +195,7 @@ fun hoHoHo(christmasCheer: Float = 100f, follow: Boolean = false) {
         with<Player>()
         with<SpriteComponent> {
             sprite = assets().deerSprite
+            shadow = true
         }
     }
 }

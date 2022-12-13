@@ -10,9 +10,11 @@ import ktx.ashley.mapperFor
 class SpriteComponent: Component, Pool.Poolable {
 
     var sprite = Sprite()
+    var shadow = false
 
     override fun reset() {
         sprite = Sprite()
+        shadow = false
     }
 
     companion object {

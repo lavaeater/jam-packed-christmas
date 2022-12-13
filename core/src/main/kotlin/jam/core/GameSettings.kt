@@ -1,7 +1,7 @@
 package jam.core
 
 class GameSettings {
-    val GameWidth = 72f
+    val GameWidth = 36f
     val AspectRatio = 16f / 9f
     val GameHeight = AspectRatio * GameWidth
     val PixelsPerMeter = 4f

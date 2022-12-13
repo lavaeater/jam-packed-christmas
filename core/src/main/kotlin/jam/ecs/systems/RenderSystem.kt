@@ -29,17 +29,24 @@ class RenderSystem(
 
     override fun update(deltaTime: Float) {
         batch.projectionMatrix = camera.combined
+        val blackColor = Color(0f, 0f, 0f, 0.7f)
         batch.use {
             for (withTexture in engine.getEntitiesFor(textureAndTransformFamily)) {
                 val transformComponent = TransformComponent.get(withTexture)
                 val spriteComponent = SpriteComponent.get(withTexture)
                 val sprite = spriteComponent.sprite
+                val originalSpriteColor = sprite.color
                 sprite.setOriginBasedPosition(transformComponent.position.x, transformComponent.position.y)
                 sprite.setScale(gameSettings.MetersPerPixel)
                 sprite.rotation = transformComponent.angleDegrees - 90f
                 sprite.draw(batch)
-                shapeDrawer.filledCircle(transformComponent.position, 0.1f, Color.RED)
+                sprite.color = blackColor
+                sprite.setOriginBasedPosition(transformComponent.position.x + 10f, transformComponent.position.y + 10f)
+                sprite.setScale(gameSettings.MetersPerPixel / 2f)
+                sprite.draw(batch)
+                sprite.color = Color.WHITE
                 if(debug) {
+                    shapeDrawer.filledCircle(transformComponent.position, 0.1f, Color.RED)
                     shapeDrawer.line(transformComponent.position, transformComponent.position + (transformComponent.direction * 10f),Color.BLUE)
                     if(Box2d.has(withTexture)) {
                         val body = Box2d.get(withTexture).body
