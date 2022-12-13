@@ -38,15 +38,28 @@ class RenderSystem(
     override fun update(deltaTime: Float) {
         batch.projectionMatrix = camera.combined
         rayHandler.setCombinedMatrix(camera)
-        rayHandler.updateAndRender()
         val blackColor = Color(0f, 0f, 0f, 0.7f)
 
 
         batch.use {
-            for(houseEntity in engine.getEntitiesFor(houseFamily)) {
+            for (houseEntity in engine.getEntitiesFor(houseFamily)) {
                 val housePosition = TransformComponent.get(houseEntity).position
-                val patch = assets().houseTenPatch
-                patch.draw(batch, housePosition.x, housePosition.y, -25f * gameSettings.MetersPerPixel, -25f * gameSettings.MetersPerPixel, 50f, 50f, gameSettings.MetersPerPixel, gameSettings.MetersPerPixel, 0f)
+                val patch = assets().houseNinePatch
+                val house = House.get(houseEntity)
+                patch.draw(
+                    batch,
+                    housePosition.x - (house.width  / 2f),
+                    housePosition.y - (house.height  / 2f),
+                    0f,
+                    0f,
+                    house.width * gameSettings.PixelsPerMeter,
+                    house.height * gameSettings.PixelsPerMeter,
+                    gameSettings.MetersPerPixel,
+                    gameSettings.MetersPerPixel,
+                    0f
+                )
+                shapeDrawer.filledCircle(housePosition, 1f, Color.RED)
+
             }
             for (withTexture in engine.getEntitiesFor(textureAndTransformFamily)) {
                 val transformComponent = TransformComponent.get(withTexture)
@@ -56,7 +69,7 @@ class RenderSystem(
                 sprite.setScale(gameSettings.MetersPerPixel)
                 sprite.rotation = transformComponent.angleDegrees - 90f
                 sprite.draw(batch)
-                if(spriteComponent.shadow) {
+                if (spriteComponent.shadow) {
                     sprite.color = blackColor
                     sprite.setOriginBasedPosition(
                         transformComponent.position.x + 10f, // Needs to be in relation to objects rotation somehow
@@ -66,17 +79,27 @@ class RenderSystem(
                     sprite.draw(batch)
                     sprite.color = Color.WHITE
                 }
-                if(debug) {
+                if (debug) {
                     shapeDrawer.filledCircle(transformComponent.position, 0.1f, Color.RED)
-                    shapeDrawer.line(transformComponent.position, transformComponent.position + (transformComponent.direction * 10f),Color.BLUE)
-                    if(Box2d.has(withTexture)) {
+                    shapeDrawer.line(
+                        transformComponent.position,
+                        transformComponent.position + (transformComponent.direction * 10f),
+                        Color.BLUE
+                    )
+                    if (Box2d.has(withTexture)) {
                         val body = Box2d.get(withTexture).body
-                        shapeDrawer.line(body.worldCenter, body.worldCenter + vec2(1f, 0f).scl(10f).rotateRad(body.angle), Color.GREEN)
+                        shapeDrawer.line(
+                            body.worldCenter,
+                            body.worldCenter + vec2(1f, 0f).scl(10f).rotateRad(body.angle),
+                            Color.GREEN
+                        )
                     }
                 }
             }
             renderTargetDirection()
         }
+        rayHandler.updateAndRender()
+
     }
 
     private val santaFamily = allOf(SantaClaus::class, TransformComponent::class).get()
@@ -85,12 +108,12 @@ class RenderSystem(
         val santaClaus = engine.getEntitiesFor(santaFamily).first()
         val targetHouse = SantaClaus.get(santaClaus).targetHouse
         val position = TransformComponent.get(santaClaus).position
-        val targetPosition = if(NeedsGifts.has(targetHouse)) {
+        val targetPosition = if (NeedsGifts.has(targetHouse)) {
             TransformComponent.get(targetHouse).position
         } else {
             val housesThatNeedGifts = engine.getEntitiesFor(needsGifts)
             val closestOne = housesThatNeedGifts.minByOrNull { TransformComponent.get(it).position.dst2(position) }
-            if(closestOne != null) {
+            if (closestOne != null) {
                 SantaClaus.get(santaClaus).targetHouse = closestOne
                 TransformComponent.get(closestOne).position
             } else vec2()

@@ -53,7 +53,7 @@ object Context:InjectionContext() {
             )
             bindSingleton(createWorld())
             bindSingleton(RayHandler(inject()).apply {
-                setAmbientLight(.01f)
+                setAmbientLight(.25f)
                 setBlurNum(3)
             })
             bindSingleton(ShapeDrawer(inject<PolygonSpriteBatch>() as Batch, shapeDrawerRegion))
@@ -94,7 +94,7 @@ object Context:InjectionContext() {
             addSystem(AshleyAiSystem())
 //            addSystem(EnsureEntitySystem(EnsureEntityDef(allOf(Human::class).get(), 15) { createHuman() }))
             addSystem(RenderSystem(inject(), inject(), inject(), inject(), inject(), false))
-//            addSystem(Box2dDebugRenderSystem(inject(), inject()))
+            addSystem(Box2dDebugRenderSystem(inject(), inject()))
             addSystem(UpdateMemorySystem())
             addSystem(LogSystem())
         }
