@@ -1,15 +1,17 @@
-import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.MathUtils.degreesToRadians
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.BodyDef
 import eater.core.engine
 import eater.core.world
 import eater.ecs.ashley.components.*
+import jam.ecs.components.NeedsGifts
+import jam.ecs.components.SantaClaus
 import jam.ecs.components.SpriteComponent
 import jam.injection.assets
+import ktx.ashley.allOf
 import ktx.ashley.entity
 import ktx.ashley.with
 import ktx.box2d.*
-import ktx.math.vec2
 
 //fun createLights(points: List<Vector2>) {
 //    for (point in points)
@@ -112,7 +114,7 @@ import ktx.math.vec2
 //}
 //
 
-sealed class ChristmasProp(name: String):PropName(name) {
+sealed class ChristmasProp(name: String) : PropName(name) {
     object ChristmasCheer : ChristmasProp("Cheer")
 }
 
@@ -167,11 +169,11 @@ fun hoHoHo(christmasCheer: Float = 100f, follow: Boolean = false) {
             body = world().body {
                 type = BodyDef.BodyType.DynamicBody
                 userData = this@entity.entity
-                position.set(0f,0f)
-               // angle = 90f * MathUtils.degreesToRadians
+                position.set(0f, 0f)
+                // angle = 90f * MathUtils.degreesToRadians
                 angularDamping = 0.8f
                 linearDamping = 0.8f
-                fixedRotation= false
+                fixedRotation = false
 
                 box(2.5f, 4f) {
                     density = 0.1f
@@ -193,6 +195,14 @@ fun hoHoHo(christmasCheer: Float = 100f, follow: Boolean = false) {
         }
         with<TransformComponent>()
         with<Player>()
+        with<SantaClaus> {
+            targetHouse =
+                engine().getEntitiesFor(allOf(NeedsGifts::class, TransformComponent::class).get()).minByOrNull {
+                    TransformComponent.get(it).position.dst2(
+                        Vector2.Zero
+                    )
+                }!!
+        }
         with<SpriteComponent> {
             sprite = assets().deerSprite
             shadow = true

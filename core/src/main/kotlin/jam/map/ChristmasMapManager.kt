@@ -1,19 +1,18 @@
 package jam.map
 
 import com.badlogic.ashley.core.Entity
-import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector2
 import eater.core.engine
 import eater.core.world
 import eater.ecs.ashley.components.Player
 import eater.ecs.ashley.components.TransformComponent
 import jam.ecs.components.House
+import jam.ecs.components.NeedsGifts
 import jam.ecs.components.SpriteComponent
 import jam.injection.assets
 import ktx.ashley.entity
 import ktx.ashley.with
 import ktx.math.plus
-import ktx.math.random
 import ktx.math.vec2
 
 class ChristmasMapManager {
@@ -21,8 +20,9 @@ class ChristmasMapManager {
     val engine by lazy { engine() }
 
     val mapSizeRange = (-1000..1000)
-    val houseRange = (-100..100)
-    val sizeRange = 4..16
+    val houseRange = (-1000..1000)
+    val maxGridSize = 8
+    val sizeRange = 4..maxGridSize
 
     /**
      * I don't think I want a tile-based map this time around.
@@ -47,8 +47,20 @@ class ChristmasMapManager {
 
         (1..10).forEach {
             val position = vec2(houseRange.random().toFloat(), houseRange.random().toFloat())
+            createCity(position)
             allMapEntities.add(createHouseAt(position))
         }
+
+    }
+
+    private fun createCity(at: Vector2) {
+        /**
+         * Position is top left or something lazy like that.
+         */
+        val gridSize = 5..10
+        for(x in 0 until gridSize.random())
+            for(y in 0 until gridSize.random())
+                allMapEntities.add(createHouseAt(at + vec2(x * maxGridSize * 2f, y * maxGridSize * 2f)))
 
     }
 
@@ -62,6 +74,7 @@ class ChristmasMapManager {
                 width = sizeRange.random()
                 height = sizeRange.random()
             }
+            with<NeedsGifts>()
         }
     }
 

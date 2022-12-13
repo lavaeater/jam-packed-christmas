@@ -13,7 +13,7 @@ import ktx.math.minus
 import ktx.math.vec2
 import ktx.math.vec3
 
-class ChristmasCameraFollowSystem(camera: OrthographicCamera, alpha: Float):CameraFollowSystem(camera, alpha) {
+class ChristmasCameraFollowSystem(camera: OrthographicCamera, alpha: Float, private val rotate:Boolean):CameraFollowSystem(camera, alpha) {
 
     val backing = vec2()
     val cameraUp: Vector2
@@ -32,10 +32,11 @@ class ChristmasCameraFollowSystem(camera: OrthographicCamera, alpha: Float):Came
         camera.position.lerp(
             vec3(cameraPosition, 0f), alpha
         )
-        lerpVector.set(cameraUp)
-        lerpVector.lerp(transform.direction, 0.5f)
-        camera.up.set(lerpVector.x, lerpVector.y, 0f)
-
+        if(rotate) {
+            lerpVector.set(cameraUp)
+            lerpVector.lerp(transform.direction, 0.5f)
+            camera.up.set(lerpVector.x, lerpVector.y, 0f)
+        }
 //        var toRotate = clamp(cameraUp.angleDeg() -  MathUtils.lerp(cameraUp.angleDeg(), transform.direction.angleDeg(), alpha),-60f, 60f)
 //        toRotate = if(toRotate > 120f)
 //            toRotate - 120f

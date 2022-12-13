@@ -5,17 +5,17 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.utils.Pool
 import ktx.ashley.mapperFor
 
-class SantaComponent: Component, Pool.Poolable {
+class NeedsGifts: Component, Pool.Poolable {
     override fun reset() {
 
     }
 
     companion object {
-        val mapper = mapperFor<SantaComponent>()
+        val mapper = mapperFor<NeedsGifts>()
         fun has(entity: Entity): Boolean {
             return mapper.has(entity)
         }
-        fun get(entity: Entity): SantaComponent {
+        fun get(entity: Entity): NeedsGifts {
             return mapper.get(entity)
         }
     }

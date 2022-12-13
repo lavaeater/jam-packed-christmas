@@ -8,10 +8,13 @@ import eater.ecs.ashley.components.Box2d
 import eater.ecs.ashley.components.TransformComponent
 import jam.core.GameSettings
 import jam.ecs.components.House
+import jam.ecs.components.NeedsGifts
+import jam.ecs.components.SantaClaus
 import jam.ecs.components.SpriteComponent
 import jam.injection.assets
 import ktx.ashley.allOf
 import ktx.graphics.use
+import ktx.math.minus
 import ktx.math.plus
 import ktx.math.times
 import ktx.math.vec2
@@ -37,7 +40,7 @@ class RenderSystem(
             for(houseEntity in engine.getEntitiesFor(houseFamily)) {
                 val housePosition = TransformComponent.get(houseEntity).position
                 val patch = assets().houseTenPatch
-                patch.draw(batch, housePosition.x, housePosition.y, 100f, 100f, 50f, 50f, gameSettings.MetersPerPixel, gameSettings.MetersPerPixel, 0f)
+                patch.draw(batch, housePosition.x, housePosition.y, -25f * gameSettings.MetersPerPixel, -25f * gameSettings.MetersPerPixel, 50f, 50f, gameSettings.MetersPerPixel, gameSettings.MetersPerPixel, 0f)
             }
             for (withTexture in engine.getEntitiesFor(textureAndTransformFamily)) {
                 val transformComponent = TransformComponent.get(withTexture)
@@ -66,6 +69,28 @@ class RenderSystem(
                     }
                 }
             }
+            renderTargetDirection()
         }
+    }
+
+    private val santaFamily = allOf(SantaClaus::class, TransformComponent::class).get()
+    private val needsGifts = allOf(NeedsGifts::class, TransformComponent::class).get()
+    private fun renderTargetDirection() {
+        val santaClaus = engine.getEntitiesFor(santaFamily).first()
+        val targetHouse = SantaClaus.get(santaClaus).targetHouse
+        val position = TransformComponent.get(santaClaus).position
+        val targetPosition = if(NeedsGifts.has(targetHouse)) {
+            TransformComponent.get(targetHouse).position
+        } else {
+            val housesThatNeedGifts = engine.getEntitiesFor(needsGifts)
+            val closestOne = housesThatNeedGifts.minByOrNull { TransformComponent.get(it).position.dst2(position) }
+            if(closestOne != null) {
+                SantaClaus.get(santaClaus).targetHouse = closestOne
+                TransformComponent.get(closestOne).position
+            } else vec2()
+        }
+        val directionTo = (targetPosition - position).nor().scl(10f)
+        shapeDrawer.filledCircle(position + directionTo, 1f, Color.RED)
+        shapeDrawer.filledCircle(targetPosition, 1f, Color.GREEN)
     }
 }

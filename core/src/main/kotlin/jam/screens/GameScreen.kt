@@ -10,6 +10,7 @@ import hoHoHo
 import jam.core.ChristmasGame
 import jam.core.GameSettings
 import jam.map.ChristmasMapManager
+import jam.ui.WinterHud
 import ktx.app.KtxInputAdapter
 import ktx.app.KtxScreen
 import ktx.app.clearScreen
@@ -20,7 +21,8 @@ class GameScreen(
     private val viewPort: ExtendViewport,
     private val batch: PolygonSpriteBatch,
     private val camera: OrthographicCamera,
-    private val gameSettings: GameSettings
+    private val gameSettings: GameSettings,
+    private val winterHud: WinterHud
 ) : KtxScreen, KtxInputAdapter {
     override fun hide() {
         super.hide()
@@ -35,19 +37,19 @@ class GameScreen(
     override fun render(delta: Float) {
         clearScreen(bgColor.r, bgColor.g, bgColor.b)
         engine.update(delta)
+        winterHud.render(delta)
     }
 
     override fun resize(width: Int, height: Int) {
         viewPort.update(width, height)
         batch.projectionMatrix = camera.combined
-//        inject<HackLightEngine>().update(width, height)
     }
 
     override fun resume() {
         super.resume()
     }
 
-    val mapManager = ChristmasMapManager()
+    private val mapManager = ChristmasMapManager()
 
     override fun show() {
         mapManager.createMap()

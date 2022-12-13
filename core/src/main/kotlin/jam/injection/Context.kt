@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import eater.ecs.ashley.systems.*
 import eater.injection.InjectionContext
+import eater.ui.LavaHud
 import jam.core.ChristmasGame
 import jam.core.GameSettings
 import jam.ecs.systems.ChristmasCameraFollowSystem
@@ -19,6 +20,7 @@ import jam.screens.SplashScreen
 import jam.screens.GameOverScreen
 import jam.screens.GameScreen
 import jam.screens.GameSelectScreen
+import jam.ui.WinterHud
 import ktx.assets.disposeSafely
 import ktx.box2d.createWorld
 import space.earlygrey.shapedrawer.ShapeDrawer
@@ -60,8 +62,10 @@ object Context:InjectionContext() {
             bindSingleton(SplashScreen(inject()))
             bindSingleton(GameSelectScreen(inject()))
             bindSingleton(GameOverScreen(inject()))
+            bindSingleton(WinterHud(inject()))
             bindSingleton(
                 GameScreen(
+                    inject(),
                     inject(),
                     inject(),
                     inject(),
@@ -78,7 +82,7 @@ object Context:InjectionContext() {
             addSystem(RemoveEntitySystem())
             //addSystem(CameraAndMapSystem(inject(), 0.75f, inject(),gameSettings.AspectRatio))
             addSystem(Box2dUpdateSystem(gameSettings.TimeStep, gameSettings.VelIters, gameSettings.PosIters))
-            addSystem(ChristmasCameraFollowSystem(inject(), 0.1f))
+            addSystem(ChristmasCameraFollowSystem(inject(), 0.1f, false))
             addSystem(SantaControlSystem())
             addSystem(KeyboardInputSystem(inject(), invertX = true, invertY = false))
             addSystem(FlashlightDirectionSystem())
