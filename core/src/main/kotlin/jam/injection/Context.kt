@@ -15,6 +15,7 @@ import jam.core.ChristmasGame
 import jam.core.GameSettings
 import jam.ecs.systems.ChristmasCameraFollowSystem
 import jam.ecs.systems.RenderSystem
+import jam.ecs.systems.RudolfNoseSystem
 import jam.ecs.systems.SantaControlSystem
 import jam.screens.SplashScreen
 import jam.screens.GameOverScreen
@@ -85,14 +86,14 @@ object Context:InjectionContext() {
             addSystem(ChristmasCameraFollowSystem(inject(), 0.1f, false))
             addSystem(SantaControlSystem())
             addSystem(KeyboardInputSystem(inject(), invertX = true, invertY = false))
-            addSystem(FlashlightDirectionSystem())
+            addSystem(RudolfNoseSystem())
             addSystem(LightPositionUpdateSystem())
             addSystem(SteerSystem())
             addSystem(AiTimePieceSystem())
             addSystem(UpdateActionsSystem())
             addSystem(AshleyAiSystem())
 //            addSystem(EnsureEntitySystem(EnsureEntityDef(allOf(Human::class).get(), 15) { createHuman() }))
-            addSystem(RenderSystem(inject(), inject(), inject(), inject(), false))
+            addSystem(RenderSystem(inject(), inject(), inject(), inject(), inject(), false))
 //            addSystem(Box2dDebugRenderSystem(inject(), inject()))
             addSystem(UpdateMemorySystem())
             addSystem(LogSystem())

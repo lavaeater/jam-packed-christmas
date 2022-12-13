@@ -1,12 +1,14 @@
+import box2dLight.ConeLight
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.MathUtils.degreesToRadians
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.BodyDef
 import eater.core.engine
 import eater.core.world
 import eater.ecs.ashley.components.*
-import jam.ecs.components.NeedsGifts
-import jam.ecs.components.SantaClaus
-import jam.ecs.components.SpriteComponent
+import eater.injection.InjectionContext.Companion.inject
+import jam.ecs.components.*
+import jam.ecs.systems.RudolfNoseSystem
 import jam.injection.assets
 import ktx.ashley.allOf
 import ktx.ashley.entity
@@ -149,6 +151,11 @@ fun hoHoHo(christmasCheer: Float = 100f, follow: Boolean = false) {
 
     engine().entity {
         with<Human>()
+        with<Rudolf>()
+        with<RedNose> {
+            offset = 2f
+            light = ConeLight(inject(), 16, Color.RED, 100f,0f, 0f,90f, 5f)
+        }
         with<NewProp> {
             props[ChristmasProp.ChristmasCheer] = CoolProp.FloatProperty(ChristmasProp.ChristmasCheer)
         }

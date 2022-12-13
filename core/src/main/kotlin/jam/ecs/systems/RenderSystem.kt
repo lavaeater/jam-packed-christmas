@@ -1,5 +1,6 @@
 package jam.ecs.systems
 
+import box2dLight.RayHandler
 import com.badlogic.ashley.core.EntitySystem
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
@@ -27,6 +28,7 @@ class RenderSystem(
     private val shapeDrawer: ShapeDrawer,
     private val camera: OrthographicCamera,
     private val gameSettings: GameSettings,
+    private val rayHandler: RayHandler,
     private val debug: Boolean
 ) : EntitySystem() {
 
@@ -35,7 +37,11 @@ class RenderSystem(
 
     override fun update(deltaTime: Float) {
         batch.projectionMatrix = camera.combined
+        rayHandler.setCombinedMatrix(camera)
+        rayHandler.updateAndRender()
         val blackColor = Color(0f, 0f, 0f, 0.7f)
+
+
         batch.use {
             for(houseEntity in engine.getEntitiesFor(houseFamily)) {
                 val housePosition = TransformComponent.get(houseEntity).position
