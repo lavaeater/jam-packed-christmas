@@ -25,24 +25,32 @@ import ktx.assets.disposeSafely
 import ktx.box2d.createWorld
 import space.earlygrey.shapedrawer.ShapeDrawer
 import com.badlogic.ashley.core.Entity
+import eater.ecs.ashley.components.Remove
+import eater.physics.addComponent
 import eater.physics.bothAreEntities
 import eater.physics.getEntityFor
 import eater.physics.justOneHas
-import jam.ecs.components.House
-import jam.ecs.components.NeedsGifts
-import jam.ecs.components.SantaClaus
+import jam.ecs.components.*
 import jam.ecs.systems.*
+import ktx.ashley.remove
 
 sealed class ContactType {
     class SantaAndHouse(val santaClaus: Entity, val house: Entity) : ContactType()
+    class HouseAndPresent(val house: Entity, val present: Entity): ContactType()
     object Other : ContactType()
 }
 
 fun Contact.getContactType(): ContactType {
-    return if (this.bothAreEntities() && this.justOneHas<SantaClaus>() && this.justOneHas<House>()) ContactType.SantaAndHouse(
+    return if (this.bothAreEntities())
+        if(this.justOneHas<SantaClaus>() && this.justOneHas<House>()) ContactType.SantaAndHouse(
         this.getEntityFor<SantaClaus>(),
         this.getEntityFor<House>()
-    ) else ContactType.Other
+    ) else if(this.justOneHas<ChristmasPresent>() && this.justOneHas<House>()) ContactType.HouseAndPresent(
+            this.getEntityFor<House>(),
+            this.getEntityFor<ChristmasPresent>()
+        ) else ContactType.Other
+    else
+        ContactType.Other
 
 }
 
@@ -84,6 +92,12 @@ object Context : InjectionContext() {
                             }
 
                             ContactType.Other -> {}
+                            is ContactType.HouseAndPresent -> {
+                                val houseEntity = contactType.house
+                                houseEntity.remove<NeedsGifts>()
+                                houseEntity.addComponent<NeedsChristmasLights>()
+                                contactType.present.addComponent<Remove>()
+                            }
                         }
                     }
 
@@ -94,6 +108,7 @@ object Context : InjectionContext() {
                                 santaComponent.targetHouses.remove(contactType.house)
                             }
                             ContactType.Other -> {}
+                            else -> {}
                         }
                     }
 
@@ -106,7 +121,7 @@ object Context : InjectionContext() {
                 })
             })
             bindSingleton(RayHandler(inject()).apply {
-                setAmbientLight(.25f)
+                setAmbientLight(.75f)
                 setBlurNum(3)
             })
             bindSingleton(ShapeDrawer(inject<PolygonSpriteBatch>() as Batch, shapeDrawerRegion))
@@ -147,7 +162,7 @@ object Context : InjectionContext() {
             addSystem(AshleyAiSystem())
 //            addSystem(EnsureEntitySystem(EnsureEntityDef(allOf(Human::class).get(), 15) { createHuman() }))
             addSystem(RenderSystem(inject(), inject(), inject(), inject(), inject(), false))
-            addSystem(Box2dDebugRenderSystem(inject(), inject()))
+//            addSystem(Box2dDebugRenderSystem(inject(), inject()))
             addSystem(DeliverPresentsSystem())
             addSystem(UpdateMemorySystem())
             addSystem(LogSystem())

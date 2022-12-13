@@ -16,6 +16,7 @@ class SpriteComponent: Component, Pool.Poolable {
     override fun reset() {
         sprite = Sprite()
         shadow = false
+        scale = 1f
     }
 
     companion object {

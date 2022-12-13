@@ -8,10 +8,7 @@ import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch
 import eater.ecs.ashley.components.Box2d
 import eater.ecs.ashley.components.TransformComponent
 import jam.core.GameSettings
-import jam.ecs.components.House
-import jam.ecs.components.NeedsGifts
-import jam.ecs.components.SantaClaus
-import jam.ecs.components.SpriteComponent
+import jam.ecs.components.*
 import jam.injection.assets
 import ktx.ashley.allOf
 import ktx.graphics.use
@@ -58,15 +55,15 @@ class RenderSystem(
                     gameSettings.MetersPerPixel,
                     0f
                 )
-                shapeDrawer.filledCircle(housePosition, 1f, Color.RED)
-
+                if(!NeedsGifts.has(houseEntity))
+                    shapeDrawer.filledCircle(housePosition, 1f, Color.GREEN)
             }
             for (withTexture in engine.getEntitiesFor(textureAndTransformFamily)) {
                 val transformComponent = TransformComponent.get(withTexture)
                 val spriteComponent = SpriteComponent.get(withTexture)
                 val sprite = spriteComponent.sprite
                 sprite.setOriginBasedPosition(transformComponent.position.x, transformComponent.position.y)
-                sprite.setScale(gameSettings.MetersPerPixel)
+                sprite.setScale(gameSettings.MetersPerPixel * spriteComponent.scale)
                 sprite.rotation = transformComponent.angleDegrees - 90f
                 sprite.draw(batch)
                 if (spriteComponent.shadow) {
@@ -75,9 +72,12 @@ class RenderSystem(
                         transformComponent.position.x + 10f, // Needs to be in relation to objects rotation somehow
                         transformComponent.position.y + 10f
                     )
-                    sprite.setScale(gameSettings.MetersPerPixel / 2f)
+                    sprite.setScale(gameSettings.MetersPerPixel / 2f * spriteComponent.scale)
                     sprite.draw(batch)
                     sprite.color = Color.WHITE
+                }
+                if(ChristmasPresent.has(withTexture)) {
+                    spriteComponent.scale = spriteComponent.scale * 0.995f
                 }
                 if (debug) {
                     shapeDrawer.filledCircle(transformComponent.position, 0.1f, Color.RED)

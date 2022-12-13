@@ -151,8 +151,8 @@ fun throwPresent(from:Vector2, to: Vector2) {
 
     }
     val body = Box2d.get(thrownPresent).body
-    val impulse = (to - from).nor().scl(0.5f)
-    body.applyLinearImpulse(impulse, body.worldCenter + vec2(1f, 1f), true)
+    val impulse = (to - from).nor().scl(0.25f)
+    body.applyLinearImpulse(impulse, body.worldCenter + vec2(0.25f, 0f), true)
 }
 
 fun hoHoHo(christmasCheer: Float = 100f, follow: Boolean = false) {
