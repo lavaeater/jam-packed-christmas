@@ -43,6 +43,12 @@ class ChristmasMapManager {
     private val allMapEntities = mutableListOf<Entity>()
     val cities = mutableListOf<City>()
 
+    fun fixCityDifficulty(city: City) {
+        /**
+         * Now the fun begins!
+         */
+    }
+
     fun getClosestCityThatNeedsGifts(to: Vector2): City? {
         return cities.filter { it.needsGifts }.minByOrNull { it.cityPosition.dst2(to) }
     }

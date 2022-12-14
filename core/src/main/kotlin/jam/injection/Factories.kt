@@ -100,7 +100,7 @@ fun hoHoHo(christmasCheer: Float = 100f, follow: Boolean = false) {
             offset = 2f
             light = ConeLight(inject(), 16, Color.RED, 100f, 0f, 0f, 90f, 5f)
         }
-        with<NewProp> {
+        with<ChristmasPropComponent> {
             props[ChristmasProp.ChristmasCheer] = CoolProp.FloatProperty(ChristmasProp.ChristmasCheer, christmasCheer)
         }
         if (follow)
