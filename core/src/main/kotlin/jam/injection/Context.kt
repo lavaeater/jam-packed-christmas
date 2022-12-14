@@ -121,7 +121,7 @@ object Context : InjectionContext() {
                 })
             })
             bindSingleton(RayHandler(inject()).apply {
-                setAmbientLight(.75f)
+                setAmbientLight(.25f)
                 setBlurNum(3)
             })
             bindSingleton(ShapeDrawer(inject<PolygonSpriteBatch>() as Batch, shapeDrawerRegion))
@@ -131,7 +131,7 @@ object Context : InjectionContext() {
             bindSingleton(SplashScreen(inject()))
             bindSingleton(GameSelectScreen(inject()))
             bindSingleton(GameOverScreen(inject()))
-            bindSingleton(WinterHud(inject()))
+            bindSingleton(WinterHud(inject(), inject()))
             bindSingleton(
                 GameScreen(
                     inject(),
@@ -160,6 +160,7 @@ object Context : InjectionContext() {
             addSystem(AiTimePieceSystem())
             addSystem(UpdateActionsSystem())
             addSystem(AshleyAiSystem())
+            addSystem(AddChristmasLightsSystem(inject()))
 //            addSystem(EnsureEntitySystem(EnsureEntityDef(allOf(Human::class).get(), 15) { createHuman() }))
             addSystem(RenderSystem(inject(), inject(), inject(), inject(), inject(), false))
 //            addSystem(Box2dDebugRenderSystem(inject(), inject()))

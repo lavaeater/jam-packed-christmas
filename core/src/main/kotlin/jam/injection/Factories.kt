@@ -122,7 +122,7 @@ sealed class ChristmasProp(name: String) : PropName(name) {
     object ChristmasCheer : ChristmasProp("Cheer")
 }
 
-fun throwPresent(from:Vector2, to: Vector2) {
+fun throwPresent(from: Vector2, to: Vector2) {
     val thrownPresent = engine().entity {
         with<ChristmasPresent>()
         with<TransformComponent>()
@@ -158,12 +158,13 @@ fun throwPresent(from:Vector2, to: Vector2) {
 fun hoHoHo(christmasCheer: Float = 100f, follow: Boolean = false) {
     val carriageEntity = engine().entity {
         with<SantaClaus> {
-            closestHouse =
-                engine().getEntitiesFor(allOf(NeedsGifts::class, TransformComponent::class).get()).minByOrNull {
-                    TransformComponent.get(it).position.dst2(
+            targetCityPosition.set(
+                House.get(engine().getEntitiesFor(allOf(NeedsGifts::class, House::class).get()).minByOrNull {
+                    House.get(it).cityPosition.dst2(
                         Vector2.Zero
                     )
-                }!!
+                }!!).cityPosition
+            )
         }
         with<Box2d> {
             body = world().body {

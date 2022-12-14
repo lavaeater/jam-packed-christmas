@@ -35,6 +35,8 @@ class RenderSystem(
     override fun update(deltaTime: Float) {
         batch.projectionMatrix = camera.combined
         rayHandler.setCombinedMatrix(camera)
+        rayHandler.updateAndRender()
+
         val blackColor = Color(0f, 0f, 0f, 0.7f)
 
 
@@ -55,8 +57,6 @@ class RenderSystem(
                     gameSettings.MetersPerPixel,
                     0f
                 )
-                if(!NeedsGifts.has(houseEntity))
-                    shapeDrawer.filledCircle(housePosition, 1f, Color.GREEN)
             }
             for (withTexture in engine.getEntitiesFor(textureAndTransformFamily)) {
                 val transformComponent = TransformComponent.get(withTexture)
@@ -98,7 +98,6 @@ class RenderSystem(
             }
             renderTargetDirection()
         }
-        rayHandler.updateAndRender()
 
     }
 
@@ -106,10 +105,10 @@ class RenderSystem(
     private val needsGifts = allOf(NeedsGifts::class, TransformComponent::class).get()
     private fun renderTargetDirection() {
         val santaClaus = engine.getEntitiesFor(santaFamily).first()
-        val targetHouse = SantaClaus.get(santaClaus).closestHouse
+        val targetCityPosition = SantaClaus.get(santaClaus).targetCityPosition
         val position = TransformComponent.get(santaClaus).position
-        val targetPosition = if (NeedsGifts.has(targetHouse)) {
-            TransformComponent.get(targetHouse).position
+        val targetPosition = if (NeedsGifts.has(targetCityPosition)) {
+            TransformComponent.get(targetCityPosition).position
         } else {
             val housesThatNeedGifts = engine.getEntitiesFor(needsGifts)
             val closestOne = housesThatNeedGifts.minByOrNull { TransformComponent.get(it).position.dst2(position) }
