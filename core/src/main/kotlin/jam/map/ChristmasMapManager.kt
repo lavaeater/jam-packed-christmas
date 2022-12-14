@@ -1,25 +1,33 @@
 package jam.map
 
 import Categories
+import ChristmasProp
 import com.badlogic.ashley.core.Entity
+import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.BodyDef
+import eater.ai.ashley.AiComponent
+import eater.ai.ashley.ConsideredAction
 import eater.core.engine
 import eater.core.world
-import eater.ecs.ashley.components.Box2d
-import eater.ecs.ashley.components.Player
-import eater.ecs.ashley.components.TransformComponent
+import eater.ecs.ashley.components.*
+import jam.core.wholePoints
 import jam.ecs.components.House
 import jam.ecs.components.NeedsGifts
+import jam.ecs.components.SantaClaus
 import jam.ecs.components.SpriteComponent
 import jam.injection.assets
+import ktx.ashley.allOf
 import ktx.ashley.entity
 import ktx.ashley.with
 import ktx.box2d.body
 import ktx.box2d.box
+import ktx.box2d.circle
 import ktx.box2d.filter
 import ktx.math.plus
 import ktx.math.vec2
+import shootMissileAtSanta
+import java.awt.font.TransformAttribute
 
 class ChristmasMapManager {
     private val world by lazy { world() }
@@ -47,6 +55,84 @@ class ChristmasMapManager {
         /**
          * Now the fun begins!
          */
+        if ((1..5).contains(city.difficulty)) {
+            addSamSites(city)
+        }
+    }
+
+    private fun addSamSites(city: City) {
+        val cityBounds = city.cityBounds
+        val outerBounds =
+            Rectangle(cityBounds.x - 5f, cityBounds.y - 5f, cityBounds.width + 10f, cityBounds.height + 10f)
+        val validPoints = outerBounds.wholePoints() - cityBounds.wholePoints().toSet()
+        for (i in 1..city.difficulty) {
+            val samPosition = validPoints.random()
+            val detectorRange = (15..50).random().toFloat()
+
+            engine.entity {
+                with<TransformComponent>()
+                with<ChristmasPropComponent> {
+                    props[ChristmasProp.NaughtyHealth] = CoolProp.FloatProperty(ChristmasProp.NaughtyHealth)
+
+                }
+                with<AiComponent> {
+                    val santaFamily = allOf(SantaClaus::class).get()
+                    val samCoolDown = (1..5).random().toFloat()
+                    var coolDown = 0f
+                    actions.addAll(
+                        listOf(
+                            ConsideredAction(
+                                "Shoot if Santa is in Range, maan",
+                                0f..1f,
+                                { entity, deltaTime ->
+                                    if(coolDown <= 0f) {
+                                        val samSitePosition = TransformComponent.get(entity).position
+                                        val santaEntity = engine().getEntitiesFor(santaFamily).first()
+                                        val santaPosition = TransformComponent.get(santaEntity).position
+                                        if (samSitePosition.dst(santaPosition) < detectorRange) {
+                                            shootMissileAtSanta(samPosition, santaEntity)
+                                        }
+                                        coolDown = samCoolDown
+                                    } else {
+                                        coolDown -= deltaTime
+                                    }
+
+                                    false
+                                },
+                            )
+                        )
+                    )
+                }
+                with<SpriteComponent> {
+                    sprite = assets().samSiteSprite
+                }
+                with<Box2d> {
+                    body = world.body {
+                        type = BodyDef.BodyType.StaticBody
+                        userData = this@entity.entity
+                        position.set(samPosition)
+                        angularDamping = 0.8f
+                        linearDamping = 0.8f
+                        fixedRotation = true
+
+                        box(1f, 1f) {
+                            density = 0.1f
+                            filter {
+                                categoryBits = Categories.samSite
+                                maskBits = Categories.whatSamSitesCollideWith
+                            }
+                        }
+                        circle(detectorRange) {
+                            isSensor = true
+                            filter {
+                                categoryBits = Categories.samSite
+                                maskBits = Categories.whatSamSitesCollideWith
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     fun getClosestCityThatNeedsGifts(to: Vector2): City? {

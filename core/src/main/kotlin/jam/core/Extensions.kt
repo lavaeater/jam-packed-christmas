@@ -2,6 +2,8 @@ package jam.core
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.MathUtils
+import com.badlogic.gdx.math.Rectangle
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Contact
 import eater.physics.bothAreEntities
 import eater.physics.getEntityFor
@@ -10,6 +12,8 @@ import jam.ecs.components.ChristmasPresent
 import jam.ecs.components.House
 import jam.ecs.components.SantaClaus
 import jam.injection.ContactType
+import ktx.math.vec2
+import sun.security.ec.point.ProjectivePoint.Mutable
 
 fun String.toColor(): Color {
     val parts = this.chunked(2)
@@ -31,4 +35,12 @@ fun Contact.getContactType(): ContactType {
     else
         ContactType.Other
 
+}
+
+fun Rectangle.wholePoints():MutableList<Vector2> {
+    val points = mutableListOf<Vector2>()
+    for(x in this.x.toInt()..(this.x + this.width).toInt())
+        for(y in this.y.toInt()..(this.y + this.height).toInt())
+            points.add(vec2(x.toFloat(), y.toFloat()))
+    return points
 }

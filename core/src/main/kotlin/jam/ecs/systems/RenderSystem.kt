@@ -29,7 +29,8 @@ class RenderSystem(
     private val camera: OrthographicCamera,
     private val gameSettings: GameSettings,
     private val rayHandler: RayHandler,
-    private val debug: Boolean
+    private val debug: Boolean,
+    private val christmasMapManager: ChristmasMapManager
 ) : EntitySystem() {
 
     private val textureAndTransformFamily = allOf(SpriteComponent::class, TransformComponent::class).get()
@@ -117,6 +118,7 @@ class RenderSystem(
             val cityThatNeedsGifts = inject<ChristmasMapManager>().getClosestCityThatNeedsGifts(position)
             if (cityThatNeedsGifts != null) {
                 cityThatNeedsGifts.difficulty = ScoreKeeper.difficulty
+                christmasMapManager.fixCityDifficulty(cityThatNeedsGifts)
                 SantaClaus.get(santaClaus).targetCity = cityThatNeedsGifts
                 cityThatNeedsGifts.cityPosition
             } else vec2()

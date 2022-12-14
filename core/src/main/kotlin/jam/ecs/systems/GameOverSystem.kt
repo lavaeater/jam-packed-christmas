@@ -4,13 +4,10 @@ import ChristmasProp
 import com.badlogic.ashley.systems.IntervalSystem
 import eater.ecs.ashley.components.ChristmasPropComponent
 import eater.ecs.ashley.components.CoolProp
-import eater.ecs.ashley.components.Prop
-import eater.ecs.ashley.components.PropsAndStuff
 import jam.core.ChristmasGame
 import jam.ecs.components.SantaClaus
 import jam.map.ChristmasMapManager
 import ktx.ashley.allOf
-import kotlin.reflect.KClass
 
 fun ChristmasPropComponent.getChristmasCheer(): CoolProp.FloatProperty? {
     return this.props[ChristmasProp.ChristmasCheer] as CoolProp.FloatProperty?

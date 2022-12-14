@@ -1,8 +1,11 @@
 import box2dLight.ConeLight
+import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.MathUtils.degreesToRadians
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.BodyDef
+import eater.ai.ashley.AiComponent
+import eater.ai.ashley.GenericAction
 import eater.core.engine
 import eater.core.world
 import eater.ecs.ashley.components.*
@@ -19,7 +22,77 @@ import ktx.math.vec2
 
 sealed class ChristmasProp(name: String) : PropName(name) {
     object ChristmasCheer : ChristmasProp("Cheer")
+    object NaughtyHealth: ChristmasProp("Naughty Health")
 }
+
+fun shootMissileAtSanta(from: Vector2, santaEntity: Entity) {
+    val santaPosition = TransformComponent.get(santaEntity).position
+    val targetAngleRad = (from - santaPosition).nor().angleRad()
+    val missileEntity = engine().entity {
+        with<SpriteComponent> {
+            sprite = assets().samSprite
+            shadow = true
+        }
+        with<TransformComponent>()
+        with<SamComponent>()
+        with<Box2d> {
+            body = world().body {
+                type = BodyDef.BodyType.DynamicBody
+                userData = this@entity.entity
+                position.set(from)
+                angularDamping = 0.8f
+                linearDamping = 0.8f
+                fixedRotation = false
+                angle = targetAngleRad
+                box(0.25f, 1f) {
+                    density = 0.01f
+                    filter {
+                        categoryBits = Categories.actualSam
+                        maskBits = Categories.whatActualSamCollidesWith
+                    }
+                }
+            }
+        }
+        with<AiComponent> {
+            val currentFuelInSeconds = (2..7).random().toFloat()
+            actions.addAll(listOf(
+                GenericAction("HeatSeeker")
+            ))
+        }
+    }
+
+}
+
+/**
+ * val directionToTarget = (state.target!!.worldCenter - body.worldCenter).nor()
+ *                         val currentDirection = body.linearVelocity.nor()
+ *                         currentDirection.lerp(directionToTarget, 0.25f)
+ *
+ * //                        if ((body.angle * radiansToDegrees - currentDirection.angleDeg()) > 5f) {
+ * //                            body.applyTorque(-150f, true)
+ * //                        } else if ((body.angle * radiansToDegrees - currentDirection.angleDeg()) < -5f) {
+ * //                            body.applyTorque(150f, true)
+ * //                        }
+ *
+ *                         body.setTransform(body.position, currentDirection.angleRad() - MathUtils.HALF_PI)
+ *                         body.applyForce(currentDirection.scl(state.force), body.worldCenter, true)
+ *
+ *
+ *                     } else {
+ *                         val potentialTargets = engine().getEntitiesFor(if(player) robotCars else playerCars)
+ *                         val target = potentialTargets.map { Box2d.get(it).body }
+ *                             .sortedBy { it.worldCenter.dst(body.worldCenter) }.firstOrNull()
+ *                         if (target != null) {
+ *                             state.hasTarget = true
+ *                             state.target = target
+ *                         }
+ *                         val forwardNormal = state.startDirection.cpy()
+ *                         val currentSpeed = body.forwardVelocity().dot(forwardNormal)
+ *                         if (currentSpeed < state.maxSpeed)
+ *                             body.applyForce(forwardNormal.scl(state.force), body.worldCenter, true)
+ */
+
+
 
 fun throwPresent(from: Vector2, to: Vector2) {
     val thrownPresent = engine().entity {

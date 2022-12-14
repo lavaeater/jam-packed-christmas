@@ -49,6 +49,9 @@ class Assets(private val gameSettings: GameSettings) : DisposableRegistry by Dis
     val houseTopTexture = Texture("city/housetop-1.png".toInternalFile())
     val houseNinePatch = NinePatch(houseTopTexture,4,4,4,4)
 
+    val samSiteSprite = Sprite(Texture("city/sam-launcher.png".toInternalFile()))
+    val samSprite = Sprite(Texture("city/sam.png".toInternalFile()))
+
     override fun dispose() {
         registeredDisposables.disposeSafely()
     }
