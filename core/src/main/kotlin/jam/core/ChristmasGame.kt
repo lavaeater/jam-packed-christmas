@@ -22,7 +22,7 @@ class ChristmasGame : MainGame() {
         addScreen(inject<GameSelectScreen>())
         addScreen(inject<GameOverScreen>())
         addScreen(inject<GameScreen>())
-        setScreen<GameScreen>()
+        setScreen<SplashScreen>()
     }
 
     fun goToGameSelect() {
