@@ -11,9 +11,13 @@ import ktx.assets.disposeSafely
 import ktx.assets.toInternalFile
 import ktx.graphics.use
 
-class GameOverScreen(mainGame: ChristmasGame) : BasicScreen(mainGame, command("Go back") {
-    setUp(Input.Keys.SPACE, "Go go back") { mainGame.goToGameSelect() }
-}) {
+class GameOverScreen(mainGame: ChristmasGame) : BasicScreen(mainGame) {
+    init {
+        commandMap = command("Go back") {
+            setUp(Input.Keys.SPACE, "Go go back") { mainGame.goToGameSelect() }
+        }
+    }
+
     private val image = Texture("logo.png".toInternalFile(), true).apply {
         setFilter(
             Texture.TextureFilter.Linear,
