@@ -9,114 +9,13 @@ import eater.ecs.ashley.components.*
 import eater.injection.InjectionContext.Companion.inject
 import jam.ecs.components.*
 import jam.injection.assets
-import ktx.ashley.allOf
+import jam.map.ChristmasMapManager
 import ktx.ashley.entity
 import ktx.ashley.with
 import ktx.box2d.*
 import ktx.math.minus
 import ktx.math.plus
 import ktx.math.vec2
-
-//fun createLights(points: List<Vector2>) {
-//    for (point in points)
-//        createLight(point)
-//
-//}
-//
-//fun createLight(lightPos: Vector2) {
-//    engine().entity {
-//        with<Light> {
-//            light = PointLight(inject<RayHandler>(), 8,Color.WHITE, 50f, lightPos.x, lightPos.y)
-//        }
-//        with<Box2d> {
-//            body = world().body {
-//                type = BodyDef.BodyType.DynamicBody
-//                userData = this@entity.entity
-//                position.set(lightPos)
-//                circle(10f) {
-//                    isSensor = true
-//                    filter {
-//                        categoryBits = Categories.lights
-//                        maskBits = Categories.whatLightsCollideWith
-//                    }
-//                }
-//            }
-//        }
-//        with<TransformComponent>()
-//    }
-//}
-//
-//fun createFood(points: List<Vector2>) {
-//    engine().entity {
-//        with<Food>()
-//        with<Box2d> {
-//            body = world().body {
-//                userData = this@entity.entity
-//                type = BodyDef.BodyType.StaticBody
-//                position.set(points.random())
-//                circle(1.0f) {
-//                    filter {
-//                        categoryBits = Categories.food
-//                        maskBits = Categories.whatFoodCollidesWith
-//                    }
-//                }
-//            }
-//        }
-//        with<TransformComponent>()
-//        with<BlobsCanEatThis>()
-//    }
-//}
-//
-//fun createHumans(points: MutableList<Vector2>) {
-//    for (i in 0..20) {
-//        createRegularHuman(points.random(), follow = false)
-//    }
-//}
-//
-//fun createHuman() {
-//    createRegularHuman(inject<Map>().points[PointType.HumanStart]!!.random())
-//}
-//
-//fun createRegularHuman(at: Vector2, health: Float = 100f, follow: Boolean = false) {
-//    engine().entity {
-//        with<Human>()
-//        with<PropsAndStuff> {
-//            props.add(Prop.FloatProp.Health(health))
-//        }
-//        if (follow)
-//            with<CameraFollow>()
-//        val b2Body = world().body {
-//            type = BodyDef.BodyType.DynamicBody
-//            userData = this@entity.entity
-//            position.set(at)
-//            circle(1.0f) {
-//                filter {
-//                    categoryBits = Categories.human
-//                    maskBits = Categories.whatHumansCollideWith
-//                }
-//            }
-//        }
-//        with<Box2d> {
-//            body = b2Body
-//        }
-//        with<TransformComponent>()
-//        with<Box2dSteerable> {
-//            isIndependentFacing = false
-//            body = b2Body
-//            maxLinearSpeed = 10f
-//            maxLinearAcceleration = 100f
-//            maxAngularAcceleration = 100f
-//            maxAngularSpeed = 10f
-//            boundingRadius = 5f
-//            steeringBehavior = null
-//        }
-//        with<AiComponent> {
-//            actions.addAll(HumanActions.actions)
-//        }
-//        with<BlobsCanEatThis>()
-//    }
-//}
-//
 
 sealed class ChristmasProp(name: String) : PropName(name) {
     object ChristmasCheer : ChristmasProp("Cheer")
@@ -158,13 +57,7 @@ fun throwPresent(from: Vector2, to: Vector2) {
 fun hoHoHo(christmasCheer: Float = 100f, follow: Boolean = false) {
     val carriageEntity = engine().entity {
         with<SantaClaus> {
-            targetCityPosition.set(
-                House.get(engine().getEntitiesFor(allOf(NeedsGifts::class, House::class).get()).minByOrNull {
-                    House.get(it).cityPosition.dst2(
-                        Vector2.Zero
-                    )
-                }!!).cityPosition
-            )
+            targetCity = inject<ChristmasMapManager>().getClosestCityThatNeedsGifts(Vector2.Zero)!!
         }
         with<Box2d> {
             body = world().body {
@@ -208,7 +101,7 @@ fun hoHoHo(christmasCheer: Float = 100f, follow: Boolean = false) {
             light = ConeLight(inject(), 16, Color.RED, 100f, 0f, 0f, 90f, 5f)
         }
         with<NewProp> {
-            props[ChristmasProp.ChristmasCheer] = CoolProp.FloatProperty(ChristmasProp.ChristmasCheer)
+            props[ChristmasProp.ChristmasCheer] = CoolProp.FloatProperty(ChristmasProp.ChristmasCheer, christmasCheer)
         }
         if (follow)
             with<CameraFollow>()
@@ -216,13 +109,6 @@ fun hoHoHo(christmasCheer: Float = 100f, follow: Boolean = false) {
             maxForce = 1000f
         }
         with<KeyboardAndMouseInput>()
-//        with<Light> {
-//            light = PointLight(inject<RayHandler>(),8, Color.WHITE, 15f, 0f, 0f)
-//        }
-//        with<Flashlight> {
-//            light = ConeLight(inject<RayHandler>(), 8, Color.WHITE,40f, at.x, at.y, 0f, 30f)
-//            offset = 5f
-//        }
         with<Box2d> {
             body = world().body {
                 type = BodyDef.BodyType.DynamicBody

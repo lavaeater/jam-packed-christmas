@@ -1,5 +1,6 @@
 package jam.map
 
+import Categories
 import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.BodyDef
@@ -19,8 +20,6 @@ import ktx.box2d.box
 import ktx.box2d.filter
 import ktx.math.plus
 import ktx.math.vec2
-
-class City(val houses:MutableList<House>)
 
 class ChristmasMapManager {
     private val world by lazy { world() }
@@ -42,19 +41,21 @@ class ChristmasMapManager {
      *
      */
     private val allMapEntities = mutableListOf<Entity>()
+    val cities = mutableListOf<City>()
+
+    fun getClosestCityThatNeedsGifts(to: Vector2): City? {
+        return cities.filter { it.needsGifts }.minByOrNull { it.cityPosition.dst2(to) }
+    }
+
     fun createMap() {
-        //val randomAngleRange = (0f..MathUtils.PI2)
-        //val randomDistanceRange = 5f..10000f
-        //val randomVector = vec2(1f, 0f)
-        //Test a 1000 points first
         (1..1000).forEach { _ ->
-            val position  = vec2(mapSizeRange.random().toFloat(), mapSizeRange.random().toFloat())
+            val position = vec2(mapSizeRange.random().toFloat(), mapSizeRange.random().toFloat())
             allMapEntities.add(createTerrainThingAt(position))
         }
 
         (1..10).forEach {
 
-            val position = if(it == 0) vec2() else vec2(cityRange.random().toFloat(), cityRange.random().toFloat())
+            val position = if (it == 0) vec2() else vec2(cityRange.random().toFloat(), cityRange.random().toFloat())
             createCity(position)
         }
 
@@ -64,14 +65,19 @@ class ChristmasMapManager {
         /**
          * Position is top left or something lazy like that.
          */
-        val gridSize = 3..6
-        for(x in 0 until gridSize.random())
-            for(y in 0 until gridSize.random())
-                allMapEntities.add(createHouseAt(at + vec2(x * maxGridSize * 2f, y * maxGridSize * 2f), at))
+        val city = City()
+        cities.add(city)
+        val gridSize = 2..3
+        for (x in 0 until gridSize.random())
+            for (y in 0 until gridSize.random()) {
+                val houseEntity = createHouseAt(at + vec2(x * maxGridSize * 2f, y * maxGridSize * 2f))
+                city.houses.add(houseEntity)
+                allMapEntities.add(houseEntity)
+            }
 
     }
 
-    private fun createHouseAt(at: Vector2, cityPosition: Vector2): Entity {
+    private fun createHouseAt(at: Vector2): Entity {
         val width = sizeRange.random()
         val height = sizeRange.random()
         return engine.entity {
@@ -99,7 +105,6 @@ class ChristmasMapManager {
             with<House> {
                 this.width = width
                 this.height = height
-                this.cityPosition.set(cityPosition)
             }
             with<NeedsGifts>()
         }

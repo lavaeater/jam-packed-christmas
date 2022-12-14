@@ -3,14 +3,15 @@ package jam.ecs.components
 import com.badlogic.ashley.core.Component
 import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.utils.Pool
+import jam.map.City
 import ktx.ashley.mapperFor
 import ktx.math.vec2
 
 class SantaClaus: Component, Pool.Poolable {
-    val targetCityPosition = vec2()
+    var targetCity = City()
     val targetHouses = mutableSetOf<Entity>()
     override fun reset() {
-        targetCityPosition.setZero()
+        targetCity = City()
         targetHouses.clear()
     }
 

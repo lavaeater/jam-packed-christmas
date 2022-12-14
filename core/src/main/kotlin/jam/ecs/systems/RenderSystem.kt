@@ -7,9 +7,12 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch
 import eater.ecs.ashley.components.Box2d
 import eater.ecs.ashley.components.TransformComponent
+import eater.injection.InjectionContext.Companion.inject
 import jam.core.GameSettings
+import jam.core.ScoreKeeper
 import jam.ecs.components.*
 import jam.injection.assets
+import jam.map.ChristmasMapManager
 import ktx.ashley.allOf
 import ktx.graphics.use
 import ktx.math.minus
@@ -105,16 +108,17 @@ class RenderSystem(
     private val needsGifts = allOf(NeedsGifts::class, TransformComponent::class).get()
     private fun renderTargetDirection() {
         val santaClaus = engine.getEntitiesFor(santaFamily).first()
-        val targetCityPosition = SantaClaus.get(santaClaus).targetCityPosition
+        val targetCity = SantaClaus.get(santaClaus).targetCity
         val position = TransformComponent.get(santaClaus).position
-        val targetPosition = if (NeedsGifts.has(targetCityPosition)) {
-            TransformComponent.get(targetCityPosition).position
+        val targetPosition = if (targetCity.needsGifts) {
+            targetCity.cityPosition
         } else {
-            val housesThatNeedGifts = engine.getEntitiesFor(needsGifts)
-            val closestOne = housesThatNeedGifts.minByOrNull { TransformComponent.get(it).position.dst2(position) }
-            if (closestOne != null) {
-                SantaClaus.get(santaClaus).closestHouse = closestOne
-                TransformComponent.get(closestOne).position
+            ScoreKeeper.difficulty++
+            val cityThatNeedsGifts = inject<ChristmasMapManager>().getClosestCityThatNeedsGifts(position)
+            if (cityThatNeedsGifts != null) {
+                cityThatNeedsGifts.difficulty = ScoreKeeper.difficulty
+                SantaClaus.get(santaClaus).targetCity = cityThatNeedsGifts
+                cityThatNeedsGifts.cityPosition
             } else vec2()
         }
         val directionTo = (targetPosition - position).nor().scl(10f)
@@ -122,3 +126,4 @@ class RenderSystem(
         shapeDrawer.filledCircle(targetPosition, 1f, Color.GREEN)
     }
 }
+

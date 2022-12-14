@@ -12,47 +12,26 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse
 import com.badlogic.gdx.physics.box2d.ContactListener
 import com.badlogic.gdx.physics.box2d.Manifold
 import com.badlogic.gdx.utils.viewport.ExtendViewport
+import eater.ecs.ashley.components.Remove
 import eater.ecs.ashley.systems.*
 import eater.injection.InjectionContext
+import eater.physics.addComponent
 import jam.core.ChristmasGame
 import jam.core.GameSettings
-import jam.screens.SplashScreen
+import jam.ecs.components.*
+import jam.ecs.systems.*
+import jam.map.ChristmasMapManager
 import jam.screens.GameOverScreen
 import jam.screens.GameScreen
 import jam.screens.GameSelectScreen
+import jam.screens.SplashScreen
 import jam.ui.WinterHud
+import ktx.ashley.remove
 import ktx.assets.disposeSafely
 import ktx.box2d.createWorld
 import space.earlygrey.shapedrawer.ShapeDrawer
-import com.badlogic.ashley.core.Entity
-import eater.ecs.ashley.components.Remove
-import eater.physics.addComponent
-import eater.physics.bothAreEntities
-import eater.physics.getEntityFor
-import eater.physics.justOneHas
-import jam.ecs.components.*
-import jam.ecs.systems.*
-import ktx.ashley.remove
+import jam.core.getContactType
 
-sealed class ContactType {
-    class SantaAndHouse(val santaClaus: Entity, val house: Entity) : ContactType()
-    class HouseAndPresent(val house: Entity, val present: Entity): ContactType()
-    object Other : ContactType()
-}
-
-fun Contact.getContactType(): ContactType {
-    return if (this.bothAreEntities())
-        if(this.justOneHas<SantaClaus>() && this.justOneHas<House>()) ContactType.SantaAndHouse(
-        this.getEntityFor<SantaClaus>(),
-        this.getEntityFor<House>()
-    ) else if(this.justOneHas<ChristmasPresent>() && this.justOneHas<House>()) ContactType.HouseAndPresent(
-            this.getEntityFor<House>(),
-            this.getEntityFor<ChristmasPresent>()
-        ) else ContactType.Other
-    else
-        ContactType.Other
-
-}
 
 
 object Context : InjectionContext() {
@@ -124,10 +103,10 @@ object Context : InjectionContext() {
                 setAmbientLight(.25f)
                 setBlurNum(3)
             })
+            bindSingleton(ChristmasMapManager())
             bindSingleton(ShapeDrawer(inject<PolygonSpriteBatch>() as Batch, shapeDrawerRegion))
-            bindSingleton(getEngine(gameSettings))
+            bindSingleton(getEngine(gameSettings, false))
             bindSingleton(Assets(inject()))
-            //bindSingleton(HackLightEngine(0.01f, 0.01f, 0.01f, 0.1f))
             bindSingleton(SplashScreen(inject()))
             bindSingleton(GameSelectScreen(inject()))
             bindSingleton(GameOverScreen(inject()))
@@ -140,13 +119,14 @@ object Context : InjectionContext() {
                     inject(),
                     inject(),
                     inject(),
+                    inject(),
                     inject()
                 )
             )
         }
     }
 
-    private fun getEngine(gameSettings: GameSettings): Engine {
+    private fun getEngine(gameSettings: GameSettings, debugBox2d: Boolean): Engine {
         return PooledEngine().apply {
             addSystem(RemoveEntitySystem())
             //addSystem(CameraAndMapSystem(inject(), 0.75f, inject(),gameSettings.AspectRatio))
@@ -161,9 +141,9 @@ object Context : InjectionContext() {
             addSystem(UpdateActionsSystem())
             addSystem(AshleyAiSystem())
             addSystem(AddChristmasLightsSystem(inject()))
-//            addSystem(EnsureEntitySystem(EnsureEntityDef(allOf(Human::class).get(), 15) { createHuman() }))
             addSystem(RenderSystem(inject(), inject(), inject(), inject(), inject(), false))
-//            addSystem(Box2dDebugRenderSystem(inject(), inject()))
+            if(debugBox2d)
+                addSystem(Box2dDebugRenderSystem(inject(), inject()))
             addSystem(DeliverPresentsSystem())
             addSystem(UpdateMemorySystem())
             addSystem(LogSystem())
