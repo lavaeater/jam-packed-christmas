@@ -65,9 +65,9 @@ class ChristmasMapManager {
         val outerBounds =
             Rectangle(cityBounds.x - 5f, cityBounds.y - 5f, cityBounds.width + 10f, cityBounds.height + 10f)
         val validPoints = outerBounds.wholePoints() - cityBounds.wholePoints().toSet()
-        for (i in 1..city.difficulty) {
+        for (i in 0..city.difficulty) {
             val samPosition = validPoints.random()
-            val detectorRange = (15..50).random().toFloat()
+            val detectorRange = (25..250).random().toFloat()
 
             engine.entity {
                 with<TransformComponent>()

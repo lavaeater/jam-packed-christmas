@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch
 import eater.ecs.ashley.components.Box2d
 import eater.ecs.ashley.components.TransformComponent
 import eater.injection.InjectionContext.Companion.inject
+import eater.physics.forwardNormal
 import jam.core.GameSettings
 import jam.core.ScoreKeeper
 import jam.ecs.components.*
@@ -62,9 +63,9 @@ class RenderSystem(
                     0f
                 )
             }
-            for (withTexture in engine.getEntitiesFor(textureAndTransformFamily)) {
-                val transformComponent = TransformComponent.get(withTexture)
-                val spriteComponent = SpriteComponent.get(withTexture)
+            for (entity in engine.getEntitiesFor(textureAndTransformFamily)) {
+                val transformComponent = TransformComponent.get(entity)
+                val spriteComponent = SpriteComponent.get(entity)
                 val sprite = spriteComponent.sprite
                 sprite.setOriginBasedPosition(transformComponent.position.x, transformComponent.position.y)
                 sprite.setScale(gameSettings.MetersPerPixel * spriteComponent.scale)
@@ -80,7 +81,7 @@ class RenderSystem(
                     sprite.draw(batch)
                     sprite.color = Color.WHITE
                 }
-                if(ChristmasPresent.has(withTexture)) {
+                if(ChristmasPresent.has(entity)) {
                     spriteComponent.scale = spriteComponent.scale * 0.995f
                 }
                 if (debug) {
@@ -90,8 +91,8 @@ class RenderSystem(
                         transformComponent.position + (transformComponent.direction * 10f),
                         Color.BLUE
                     )
-                    if (Box2d.has(withTexture)) {
-                        val body = Box2d.get(withTexture).body
+                    if (Box2d.has(entity)) {
+                        val body = Box2d.get(entity).body
                         shapeDrawer.line(
                             body.worldCenter,
                             body.worldCenter + vec2(1f, 0f).scl(10f).rotateRad(body.angle),

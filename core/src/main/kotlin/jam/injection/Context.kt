@@ -129,6 +129,7 @@ object Context : InjectionContext() {
     private fun getEngine(gameSettings: GameSettings, debugBox2d: Boolean): Engine {
         return PooledEngine().apply {
             addSystem(RemoveEntitySystem())
+            addSystem(SteerSystem())
             //addSystem(CameraAndMapSystem(inject(), 0.75f, inject(),gameSettings.AspectRatio))
             addSystem(Box2dUpdateSystem(gameSettings.TimeStep, gameSettings.VelIters, gameSettings.PosIters))
             addSystem(ChristmasCameraFollowSystem(inject(), 0.1f, false))
