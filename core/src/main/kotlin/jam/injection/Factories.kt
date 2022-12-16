@@ -2,6 +2,7 @@ import box2dLight.ConeLight
 import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.MathUtils.degreesToRadians
+import com.badlogic.gdx.math.MathUtils.radiansToDegrees
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.BodyDef
 import eater.ai.ashley.AiComponent
@@ -29,8 +30,8 @@ sealed class ChristmasProp(name: String) : PropName(name) {
 
 fun shootMissileAtSanta(from: Vector2, santaEntity: Entity) {
     val santaPosition = TransformComponent.get(santaEntity).position
-    val targetAngleRad = (from - santaPosition).nor().angleRad()
-    val missileEntity = engine().entity {
+    val targetAngleRad = (santaPosition - from).nor().angleRad()
+    engine().entity {
         with<SpriteComponent> {
             sprite = assets().samSprite
             shadow = true
@@ -45,7 +46,7 @@ fun shootMissileAtSanta(from: Vector2, santaEntity: Entity) {
                 angularDamping = 0.8f
                 linearDamping = 0.8f
                 fixedRotation = false
-                angle = targetAngleRad
+                angle = targetAngleRad + 90f * radiansToDegrees
                 box(0.25f, 1f) {
                     density = 0.01f
                     filter {
@@ -65,7 +66,7 @@ fun shootMissileAtSanta(from: Vector2, santaEntity: Entity) {
                     val directionToSanta = (santaPosition - samPosition).nor()
                     var torque = samTransform.angleDegrees - directionToSanta.angleDeg()
                     val samBody = Box2d.get(entity).body
-                    samBody.applyTorque(torque * 10f * deltaTime, true)
+//                    samBody.applyTorque(torque * 1000f * deltaTime, true)
                     samBody.applyForce(samBody.forwardNormal().cpy().scl(250f) * deltaTime, samBody.worldCenter,true)
                     false
                 })

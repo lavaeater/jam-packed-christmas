@@ -55,7 +55,7 @@ class ChristmasMapManager {
         /**
          * Now the fun begins!
          */
-        if ((1..5).contains(city.difficulty)) {
+        if ((0..5).contains(city.difficulty)) {
             addSamSites(city)
         }
     }
@@ -166,6 +166,8 @@ class ChristmasMapManager {
                 city.houses.add(houseEntity)
                 allMapEntities.add(houseEntity)
             }
+
+        fixCityDifficulty(city)
 
     }
 
