@@ -10,6 +10,7 @@ import eater.core.engine
 import eater.core.world
 import eater.ecs.ashley.components.*
 import eater.injection.InjectionContext.Companion.inject
+import eater.physics.forwardNormal
 import jam.ecs.components.*
 import jam.injection.assets
 import jam.map.ChristmasMapManager
@@ -18,6 +19,7 @@ import ktx.ashley.with
 import ktx.box2d.*
 import ktx.math.minus
 import ktx.math.plus
+import ktx.math.times
 import ktx.math.vec2
 
 sealed class ChristmasProp(name: String) : PropName(name) {
@@ -56,7 +58,17 @@ fun shootMissileAtSanta(from: Vector2, santaEntity: Entity) {
         with<AiComponent> {
             val currentFuelInSeconds = (2..7).random().toFloat()
             actions.addAll(listOf(
-                GenericAction("HeatSeeker")
+                GenericAction("HeatSeeker",{ _-> 1.0f},{_ ->},{entity, deltaTime ->
+                    val santaPosition = TransformComponent.get(entity).position
+                    val samTransform = TransformComponent.get(entity)
+                    val samPosition = samTransform.position
+                    val directionToSanta = (santaPosition - samPosition).nor()
+                    var torque = samTransform.angleDegrees - directionToSanta.angleDeg()
+                    val samBody = Box2d.get(entity).body
+                    samBody.applyTorque(torque * 10f * deltaTime, true)
+                    samBody.applyForce(samBody.forwardNormal().cpy().scl(250f) * deltaTime, samBody.worldCenter,true)
+                    false
+                })
             ))
         }
     }

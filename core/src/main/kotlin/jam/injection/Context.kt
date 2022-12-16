@@ -141,7 +141,7 @@ object Context : InjectionContext() {
             addSystem(UpdateActionsSystem())
             addSystem(AshleyAiSystem())
             addSystem(AddChristmasLightsSystem(inject()))
-            addSystem(RenderSystem(inject(), inject(), inject(), inject(), inject(), false))
+            addSystem(RenderSystem(inject(), inject(), inject(), inject(), inject(), inject(), false))
             if(debugBox2d)
                 addSystem(Box2dDebugRenderSystem(inject(), inject()))
             addSystem(DeliverPresentsSystem())

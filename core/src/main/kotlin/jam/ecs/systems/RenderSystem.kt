@@ -29,8 +29,8 @@ class RenderSystem(
     private val camera: OrthographicCamera,
     private val gameSettings: GameSettings,
     private val rayHandler: RayHandler,
-    private val debug: Boolean,
-    private val christmasMapManager: ChristmasMapManager
+    private val christmasMapManager: ChristmasMapManager,
+    private val debug: Boolean
 ) : EntitySystem() {
 
     private val textureAndTransformFamily = allOf(SpriteComponent::class, TransformComponent::class).get()
