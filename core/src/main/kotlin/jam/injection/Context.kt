@@ -165,6 +165,7 @@ object Context : InjectionContext() {
             addSystem(DeliverPresentsSystem())
             addSystem(GameOverSystem(inject(), inject()))
             addSystem(SamFuelSystem())
+            addSystem(RemoveSamSiteSystem())
             addSystem(UpdateMemorySystem())
             addSystem(LogSystem())
         }

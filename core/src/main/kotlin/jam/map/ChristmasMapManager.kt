@@ -12,10 +12,7 @@ import eater.core.engine
 import eater.core.world
 import eater.ecs.ashley.components.*
 import jam.core.wholePoints
-import jam.ecs.components.House
-import jam.ecs.components.NeedsGifts
-import jam.ecs.components.SantaClaus
-import jam.ecs.components.SpriteComponent
+import jam.ecs.components.*
 import jam.injection.assets
 import ktx.ashley.allOf
 import ktx.ashley.entity
@@ -69,6 +66,9 @@ class ChristmasMapManager {
             val detectorRange = (25..250).random().toFloat()
 
             engine.entity {
+                with<SamSite> {
+                    this.city = city
+                }
                 with<TransformComponent>()
                 with<ChristmasPropComponent> {
                     props[ChristmasProp.NaughtyHealth] = CoolProp.FloatProperty(ChristmasProp.NaughtyHealth)
