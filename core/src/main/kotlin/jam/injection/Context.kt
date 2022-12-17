@@ -122,7 +122,7 @@ object Context : InjectionContext() {
             })
             bindSingleton(ChristmasMapManager())
             bindSingleton(ShapeDrawer(inject<PolygonSpriteBatch>() as Batch, shapeDrawerRegion))
-            bindSingleton(getEngine(gameSettings, false))
+            bindSingleton(getEngine(gameSettings, true))
             bindSingleton(Assets(inject()))
             bindSingleton(SplashScreen(inject()))
             bindSingleton(GameSelectScreen(inject()))
