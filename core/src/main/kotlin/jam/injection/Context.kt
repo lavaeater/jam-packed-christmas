@@ -164,6 +164,7 @@ object Context : InjectionContext() {
                 addSystem(Box2dDebugRenderSystem(inject(), inject()))
             addSystem(DeliverPresentsSystem())
             addSystem(GameOverSystem(inject(), inject()))
+            addSystem(SamFuelSystem())
             addSystem(UpdateMemorySystem())
             addSystem(LogSystem())
         }

@@ -6,8 +6,10 @@ import com.badlogic.gdx.utils.Pool
 import ktx.ashley.mapperFor
 
 class SamComponent: Component, Pool.Poolable {
-    override fun reset() {
+    var fuelInSeconds = 3f
 
+    override fun reset() {
+        fuelInSeconds = 3f
     }
 
     companion object {

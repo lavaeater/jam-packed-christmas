@@ -27,7 +27,6 @@ import ktx.box2d.filter
 import ktx.math.plus
 import ktx.math.vec2
 import shootMissileAtSanta
-import java.awt.font.TransformAttribute
 
 class ChristmasMapManager {
     private val world by lazy { world() }
@@ -77,7 +76,7 @@ class ChristmasMapManager {
                 }
                 with<AiComponent> {
                     val santaFamily = allOf(SantaClaus::class).get()
-                    val samCoolDown = (1..5).random().toFloat()
+                    val samCoolDownRange = (5..10)
                     var coolDown = 0f
                     actions.addAll(
                         listOf(
@@ -92,7 +91,7 @@ class ChristmasMapManager {
                                         if (samSitePosition.dst(santaPosition) < detectorRange) {
                                             shootMissileAtSanta(samPosition, santaEntity)
                                         }
-                                        coolDown = samCoolDown
+                                        coolDown = samCoolDownRange.random().toFloat()
                                     } else {
                                         coolDown -= deltaTime
                                     }

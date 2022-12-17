@@ -4,6 +4,8 @@ import com.badlogic.ashley.core.Engine
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch
 import com.badlogic.gdx.utils.viewport.ExtendViewport
+import eater.ecs.ashley.components.Remove
+import eater.physics.addComponent
 import hoHoHo
 import jam.core.ChristmasGame
 import jam.core.GameSettings
@@ -25,7 +27,11 @@ class GameScreen(
     private val mapManager: ChristmasMapManager
 ) : KtxScreen, KtxInputAdapter {
     override fun hide() {
-        super.hide()
+        for(entity in engine.entities) {
+            entity.addComponent<Remove>()
+        }
+        for(system in engine.systems)
+            system.setProcessing(false)
     }
 
     private val bgColor = "6D6E75".toColor()
@@ -52,6 +58,8 @@ class GameScreen(
     override fun show() {
         mapManager.createMap()
         hoHoHo(100f, true)
+        for(system in engine.systems)
+            system.setProcessing(true)
     }
 }
 
