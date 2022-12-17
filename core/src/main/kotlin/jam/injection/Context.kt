@@ -163,6 +163,7 @@ object Context : InjectionContext() {
             if(debugBox2d)
                 addSystem(Box2dDebugRenderSystem(inject(), inject()))
             addSystem(DeliverPresentsSystem())
+            addSystem(GameOverSystem(inject(), inject()))
             addSystem(UpdateMemorySystem())
             addSystem(LogSystem())
         }

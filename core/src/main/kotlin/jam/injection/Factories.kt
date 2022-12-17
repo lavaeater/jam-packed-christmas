@@ -139,6 +139,9 @@ fun hoHoHo(christmasCheer: Float = 100f, follow: Boolean = false) {
         with<SantaClaus> {
             targetCity = inject<ChristmasMapManager>().getClosestCityThatNeedsGifts(Vector2.Zero)!!
         }
+        with<ChristmasPropComponent> {
+            props[ChristmasProp.ChristmasCheer] = CoolProp.FloatProperty(ChristmasProp.ChristmasCheer, christmasCheer)
+        }
         with<Box2d> {
             body = world().body {
                 type = BodyDef.BodyType.DynamicBody
@@ -180,9 +183,7 @@ fun hoHoHo(christmasCheer: Float = 100f, follow: Boolean = false) {
             offset = 2f
             light = ConeLight(inject(), 16, Color.RED, 100f, 0f, 0f, 90f, 5f)
         }
-        with<ChristmasPropComponent> {
-            props[ChristmasProp.ChristmasCheer] = CoolProp.FloatProperty(ChristmasProp.ChristmasCheer, christmasCheer)
-        }
+
         if (follow)
             with<CameraFollow>()
         with<BodyControl> {
