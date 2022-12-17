@@ -10,7 +10,7 @@ object Categories {
     const val santasSense: Short = 32
     const val actualSam: Short = 64
 
-    val whatSantaCollidesWith = samSite or santa or lights or actualSam
+    val whatSantaCollidesWith = santa or lights or actualSam
     val whatHousesCollideWith = present or santasSense
     val whatPresentsCollideWith = house
     val whatSantasSenseCollidesWith = house

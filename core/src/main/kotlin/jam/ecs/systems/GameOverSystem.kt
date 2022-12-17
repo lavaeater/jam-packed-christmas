@@ -9,8 +9,8 @@ import jam.ecs.components.SantaClaus
 import jam.map.ChristmasMapManager
 import ktx.ashley.allOf
 
-fun ChristmasPropComponent.getChristmasCheer(): CoolProp.FloatProperty? {
-    return this.props[ChristmasProp.ChristmasCheer] as CoolProp.FloatProperty?
+fun ChristmasPropComponent.getChristmasCheer(): CoolProp.FloatProperty {
+    return this.props[ChristmasProp.ChristmasCheer] as CoolProp.FloatProperty
 }
 
 class GameOverSystem(private val christmasMapManager: ChristmasMapManager, private val mainGame: ChristmasGame): IntervalSystem(1f) {

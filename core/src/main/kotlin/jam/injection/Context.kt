@@ -1,5 +1,6 @@
 package jam.injection
 
+import ChristmasProp
 import box2dLight.RayHandler
 import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.PooledEngine
@@ -12,10 +13,11 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse
 import com.badlogic.gdx.physics.box2d.ContactListener
 import com.badlogic.gdx.physics.box2d.Manifold
 import com.badlogic.gdx.utils.viewport.ExtendViewport
-import eater.ecs.ashley.components.Remove
+import eater.ecs.ashley.components.*
 import eater.ecs.ashley.systems.*
 import eater.injection.InjectionContext
 import eater.physics.addComponent
+import explosion
 import jam.core.ChristmasGame
 import jam.core.GameSettings
 import jam.ecs.components.*
@@ -76,6 +78,21 @@ object Context : InjectionContext() {
                                 houseEntity.remove<NeedsGifts>()
                                 houseEntity.addComponent<NeedsChristmasLights>()
                                 contactType.present.addComponent<Remove>()
+                            }
+
+                            is ContactType.SantaAndSam -> {
+                                val samEntity = contactType.sam
+                                val santaClaus = contactType.santaClaus
+
+                                val samTransform = TransformComponent.get(samEntity)
+                                val samPosition = samTransform.position
+
+                                explosion(samPosition)
+
+                                samEntity.addComponent<Remove>()
+
+                                val coolProp = ChristmasPropComponent.get(santaClaus)
+                                coolProp.getChristmasCheer().current -= (5..25).random().toFloat()
                             }
                         }
                     }

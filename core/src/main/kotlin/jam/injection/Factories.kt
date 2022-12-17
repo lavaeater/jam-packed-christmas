@@ -6,28 +6,21 @@ import com.badlogic.gdx.math.MathUtils.degreesToRadians
 import com.badlogic.gdx.math.MathUtils.radiansToDegrees
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.BodyDef
-import eater.ai.ashley.AiComponent
-import eater.ai.ashley.GenericAction
 import eater.ai.steering.box2d.Box2dLocation
 import eater.ai.steering.box2d.Box2dSteerable
-import eater.ai.steering.box2d.StupidSteerable
 import eater.core.engine
 import eater.core.world
 import eater.ecs.ashley.components.*
 import eater.injection.InjectionContext.Companion.inject
-import eater.physics.forwardNormal
 import jam.ecs.components.*
 import jam.injection.assets
 import jam.map.ChristmasMapManager
 import ktx.ashley.entity
 import ktx.ashley.with
 import ktx.box2d.*
-import ktx.log.info
 import ktx.math.minus
 import ktx.math.plus
-import ktx.math.times
 import ktx.math.vec2
-import kotlin.math.absoluteValue
 
 sealed class ChristmasProp(name: String) : PropName(name) {
     object ChristmasCheer : ChristmasProp("Cheer")
@@ -71,6 +64,10 @@ fun shootMissileAtSanta(from: Vector2, santaEntity: Entity) {
             maxAngularAcceleration = 10f
         }
     }
+}
+
+fun explosion(at:Vector2) {
+
 }
 
 /**
