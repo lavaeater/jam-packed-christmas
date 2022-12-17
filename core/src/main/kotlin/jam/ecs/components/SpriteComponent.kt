@@ -12,11 +12,13 @@ class SpriteComponent: Component, Pool.Poolable {
     var sprite = Sprite()
     var shadow = false
     var scale = 1f
+    var faux3d = false
 
     override fun reset() {
         sprite = Sprite()
         shadow = false
         scale = 1f
+        faux3d = false
     }
 
     companion object {

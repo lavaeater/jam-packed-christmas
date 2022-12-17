@@ -31,7 +31,7 @@ class ChristmasMapManager {
 
     private val mapSizeRange = (-1000..1000)
     private val cityRange = (-1000..1000)
-    private val maxGridSize = 8
+    private val maxGridSize = 16
     private val sizeRange = 4..maxGridSize
 
     /**

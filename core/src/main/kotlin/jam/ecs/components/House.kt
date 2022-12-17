@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Pool
 import ktx.ashley.mapperFor
 
 class House : Component, Pool.Poolable {
+    var floors = (5..15).random()
     var width = 4
     var height = 4
     val lights = mutableListOf<Light>()
@@ -14,6 +15,7 @@ class House : Component, Pool.Poolable {
         width = 4
         height = 4
         lights.clear()
+        floors = (5..15).random()
     }
 
     companion object {
