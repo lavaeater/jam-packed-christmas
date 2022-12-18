@@ -23,17 +23,13 @@ import jam.core.GameSettings
 import jam.ecs.components.*
 import jam.ecs.systems.*
 import jam.map.ChristmasMapManager
-import jam.screens.GameOverScreen
-import jam.screens.GameScreen
-import jam.screens.GameSelectScreen
-import jam.screens.SplashScreen
 import jam.ui.WinterHud
 import ktx.ashley.remove
 import ktx.assets.disposeSafely
 import ktx.box2d.createWorld
 import space.earlygrey.shapedrawer.ShapeDrawer
 import jam.core.getContactType
-
+import jam.screens.*
 
 
 object Context : InjectionContext() {
@@ -127,6 +123,7 @@ object Context : InjectionContext() {
             bindSingleton(SplashScreen(inject()))
             bindSingleton(GameSelectScreen(inject()))
             bindSingleton(GameOverScreen(inject()))
+            bindSingleton(GameVictoryScreen(inject()))
             bindSingleton(WinterHud(inject(), inject()))
             bindSingleton(
                 GameScreen(

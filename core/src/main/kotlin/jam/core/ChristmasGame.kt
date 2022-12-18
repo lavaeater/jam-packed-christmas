@@ -5,10 +5,7 @@ import com.badlogic.gdx.Gdx
 import eater.core.MainGame
 import eater.injection.InjectionContext.Companion.inject
 import jam.injection.Context
-import jam.screens.SplashScreen
-import jam.screens.GameOverScreen
-import jam.screens.GameScreen
-import jam.screens.GameSelectScreen
+import jam.screens.*
 import ktx.async.KtxAsync
 
 class ChristmasGame : MainGame() {
@@ -21,6 +18,7 @@ class ChristmasGame : MainGame() {
         addScreen(inject<SplashScreen>())
         addScreen(inject<GameSelectScreen>())
         addScreen(inject<GameOverScreen>())
+        addScreen(inject<GameVictoryScreen>())
         addScreen(inject<GameScreen>())
         setScreen<SplashScreen>()
     }
@@ -35,6 +33,10 @@ class ChristmasGame : MainGame() {
 
     fun goToGameOver() {
         setScreen<GameOverScreen>()
+    }
+
+    fun gotoGameVictory() {
+        setScreen<GameVictoryScreen>()
     }
 }
 

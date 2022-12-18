@@ -6,10 +6,15 @@ import eater.core.MainGame
 import eater.input.command
 import eater.screens.BasicScreen
 import jam.core.ChristmasGame
+import ktx.actors.stage
 import ktx.app.clearScreen
 import ktx.assets.disposeSafely
 import ktx.assets.toInternalFile
 import ktx.graphics.use
+import ktx.scene2d.actors
+import ktx.scene2d.container
+import ktx.scene2d.image
+import ktx.scene2d.label
 
 class GameSelectScreen(mainGame: ChristmasGame) : BasicScreen(
     mainGame
@@ -21,22 +26,22 @@ class GameSelectScreen(mainGame: ChristmasGame) : BasicScreen(
         }
     }
 
-    private val image = Texture("logo.png".toInternalFile(), true).apply {
-        setFilter(
-            Texture.TextureFilter.Linear,
-            Texture.TextureFilter.Linear
-        )
-    }
-
-    override fun render(delta: Float) {
-        clearScreen(red = 0.7f, green = 0.7f, blue = 0.7f)
-        batch.use {
-
+    private val stage by lazy {
+        stage().apply {
+            actors {
+                image(Texture("images/game-selekt.png".toInternalFile())).setFillParent(true)
+                label("SPLASH - PRESS SPACE")
+            }
         }
     }
 
+    override fun render(delta: Float) {
+        clearScreen(red = 0.1f, green = 0.5f, blue = 0.7f)
+        stage.act(delta)
+        stage.draw()
+    }
+
     override fun dispose() {
-        image.disposeSafely()
         batch.disposeSafely()
     }
 }

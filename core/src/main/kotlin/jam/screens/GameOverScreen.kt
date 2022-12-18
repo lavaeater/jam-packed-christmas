@@ -6,10 +6,14 @@ import eater.core.MainGame
 import eater.input.command
 import eater.screens.BasicScreen
 import jam.core.ChristmasGame
+import ktx.actors.stage
 import ktx.app.clearScreen
 import ktx.assets.disposeSafely
 import ktx.assets.toInternalFile
 import ktx.graphics.use
+import ktx.scene2d.actors
+import ktx.scene2d.image
+import ktx.scene2d.label
 
 class GameOverScreen(mainGame: ChristmasGame) : BasicScreen(mainGame) {
     init {
@@ -18,22 +22,21 @@ class GameOverScreen(mainGame: ChristmasGame) : BasicScreen(mainGame) {
         }
     }
 
-    private val image = Texture("logo.png".toInternalFile(), true).apply {
-        setFilter(
-            Texture.TextureFilter.Linear,
-            Texture.TextureFilter.Linear
-        )
+    private val stage by lazy {
+        stage().apply {
+            actors {
+                image(Texture("images/game-over.png".toInternalFile())).setFillParent(true)
+            }
+        }
     }
 
     override fun render(delta: Float) {
         clearScreen(red = 0.7f, green = 0.7f, blue = 0.7f)
-        batch.use {
-
-        }
+        stage.act(delta)
+        stage.draw()
     }
 
     override fun dispose() {
-        image.disposeSafely()
         batch.disposeSafely()
     }
 }

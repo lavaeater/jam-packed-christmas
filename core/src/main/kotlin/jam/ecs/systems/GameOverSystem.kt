@@ -18,7 +18,7 @@ class GameOverSystem(private val christmasMapManager: ChristmasMapManager, priva
 
     override fun updateInterval() {
         if(christmasMapManager.cities.none { it.needsGifts }) {
-            mainGame.goToGameOver()
+            mainGame.gotoGameVictory()
         }
 
         val santaClaus = engine.getEntitiesFor(santaAndHealthFamily).first()
