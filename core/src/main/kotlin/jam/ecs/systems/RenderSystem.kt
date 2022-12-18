@@ -33,6 +33,7 @@ class RenderSystem(
     private val debug: Boolean
 ) : EntitySystem() {
 
+    private val dotColor = Color(1f, 0f, 0f, 0.5f)
     private val textureAndTransformFamily = allOf(SpriteComponent::class, TransformComponent::class).get()
     private val houseFamily = allOf(House::class, TransformComponent::class).get()
 
@@ -139,9 +140,8 @@ class RenderSystem(
                 cityThatNeedsGifts.cityPosition
             } else vec2()
         }
-        val directionTo = (targetPosition - position).nor().scl(10f)
-        shapeDrawer.filledCircle(position + directionTo, 1f, Color.RED)
-        shapeDrawer.filledCircle(targetPosition, 1f, Color.GREEN)
+        val directionTo = (targetPosition - position).nor().scl(20f)
+        shapeDrawer.filledCircle(position + directionTo, 0.5f, dotColor)
     }
 }
 

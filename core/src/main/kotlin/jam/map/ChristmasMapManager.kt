@@ -51,7 +51,7 @@ class ChristmasMapManager {
         /**
          * Now the fun begins!
          */
-        if ((0..5).contains(city.difficulty)) {
+        if ((1..10).contains(city.difficulty)) {
             addSamSites(city)
         }
     }
@@ -59,15 +59,18 @@ class ChristmasMapManager {
     private fun addSamSites(city: City) {
         val cityBounds = city.cityBounds
         val outerBounds =
-            Rectangle(cityBounds.x - 5f, cityBounds.y - 5f, cityBounds.width + 10f, cityBounds.height + 10f)
+            Rectangle(cityBounds.x - 10f, cityBounds.y - 10f, cityBounds.width + 20f, cityBounds.height + 20f)
         val validPoints = outerBounds.wholePoints() - cityBounds.wholePoints().toSet()
-        for (i in 0..city.difficulty) {
+        for (i in 1..city.difficulty) {
             val samPosition = validPoints.random()
-            val detectorRange = (25..250).random().toFloat()
+            val detectorRange = (15..75).random().toFloat()
 
             engine.entity {
                 with<SamSite> {
                     this.city = city
+                }
+                with<IndexComponent> {
+                    index = 1
                 }
                 with<TransformComponent>()
                 with<ChristmasPropComponent> {
@@ -139,7 +142,7 @@ class ChristmasMapManager {
     }
 
     fun createMap() {
-        (1..1000).forEach { _ ->
+        (1..2000).forEach { _ ->
             val position = vec2(mapSizeRange.random().toFloat(), mapSizeRange.random().toFloat())
             allMapEntities.add(createTerrainThingAt(position))
         }
@@ -158,7 +161,7 @@ class ChristmasMapManager {
          */
         val city = City()
         cities.add(city)
-        val gridSize = 2..3
+        val gridSize = 1..4
         for (x in 0 until gridSize.random())
             for (y in 0 until gridSize.random()) {
                 val houseEntity = createHouseAt(at + vec2(x * maxGridSize * 2f, y * maxGridSize * 2f))
@@ -174,6 +177,9 @@ class ChristmasMapManager {
         val width = sizeRange.random()
         val height = sizeRange.random()
         return engine.entity {
+            with<IndexComponent> {
+                index = 2
+            }
             with<TransformComponent> {
                 position.set(at)
             }
@@ -205,6 +211,7 @@ class ChristmasMapManager {
 
     private fun createTerrainThingAt(at: Vector2): Entity {
         return engine.entity {
+            with<IndexComponent>()
             with<TransformComponent> {
                 position.set(at)
             }
@@ -212,6 +219,7 @@ class ChristmasMapManager {
             with<SpriteComponent> {
                 sprite = assets().terrainSprite
             }
+            with<IndexComponent>()
         }
     }
 }

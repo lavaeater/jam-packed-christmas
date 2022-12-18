@@ -179,6 +179,7 @@ object Context : InjectionContext() {
 
             }))
             addSystem(LetItSnowSystem(inject()))
+            addSystem(LightExplosionSystem())
             addSystem(LogSystem())
         }
     }

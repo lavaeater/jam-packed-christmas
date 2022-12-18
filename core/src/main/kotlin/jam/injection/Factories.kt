@@ -1,4 +1,5 @@
 import box2dLight.ConeLight
+import box2dLight.PointLight
 import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.ai.steer.behaviors.Seek
 import com.badlogic.gdx.graphics.Color
@@ -87,7 +88,12 @@ fun shootMissileAtSanta(from: Vector2, santaEntity: Entity) {
 }
 
 fun explosion(at:Vector2) {
-
+    engine().entity {
+        with<LightComponent> {
+            light = PointLight(inject(), 16, Color.WHITE, 30f, at.x, at.y)
+        }
+        with<LightExplosion>()
+    }
 }
 
 fun throwPresent(from: Vector2, to: Vector2) {
