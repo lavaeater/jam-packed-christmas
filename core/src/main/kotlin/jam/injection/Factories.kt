@@ -27,6 +27,19 @@ sealed class ChristmasProp(name: String) : PropName(name) {
     object NaughtyHealth: ChristmasProp("Naughty Health")
 }
 
+fun snowFlake(at: Vector2) {
+    engine().entity {
+        with<SpriteComponent> {
+            sprite = assets().snowFlakeSprite
+            scale = 0.25f
+        }
+        with<SnowFlake>()
+        with<TransformComponent> {
+            position.set(at)
+        }
+    }
+}
+
 fun shootMissileAtSanta(from: Vector2, santaEntity: Entity) {
     val santaPosition = TransformComponent.get(santaEntity).position
     val targetAngleRad = (santaPosition - from).nor().angleRad()
@@ -34,6 +47,11 @@ fun shootMissileAtSanta(from: Vector2, santaEntity: Entity) {
         with<SpriteComponent> {
             sprite = assets().samSprite
             shadow = true
+        }
+        with<Flashlight> {
+            light = ConeLight(inject(), 4, Color.YELLOW, 15f, 0f, 0f, 0f, 15f)
+            offset = 1f
+            directionOffset = -180f
         }
         with<TransformComponent>()
         with<SamComponent> {

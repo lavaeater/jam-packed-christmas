@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.*
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Contact
 import com.badlogic.gdx.physics.box2d.ContactImpulse
 import com.badlogic.gdx.physics.box2d.ContactListener
@@ -30,6 +31,9 @@ import ktx.box2d.createWorld
 import space.earlygrey.shapedrawer.ShapeDrawer
 import jam.core.getContactType
 import jam.screens.*
+import ktx.ashley.allOf
+import ktx.math.vec2
+import snowFlake
 
 
 object Context : InjectionContext() {
@@ -151,6 +155,7 @@ object Context : InjectionContext() {
             addSystem(KeyboardInputSystem(inject(), invertX = true, invertY = false))
             addSystem(RudolfNoseSystem())
             addSystem(LightPositionUpdateSystem())
+            addSystem(TransformBasedFlashlightDirectionSystem())
             addSystem(SteerSystem())
             addSystem(AiTimePieceSystem())
             addSystem(UpdateActionsSystem())
@@ -164,6 +169,16 @@ object Context : InjectionContext() {
             addSystem(SamFuelSystem())
             addSystem(RemoveSamSiteSystem())
             addSystem(UpdateMemorySystem())
+            addSystem(EnsureEntitySystem(EnsureEntityDef(allOf(SnowFlake::class).get(), 100, 0.1f, true) {
+                val camera = inject<OrthographicCamera>()
+                val snowFlakePosition = vec2(
+                    camera.position.x + (-100..100).random().toFloat(),
+                    camera.position.y + (-100..100).random().toFloat())
+
+                snowFlake(snowFlakePosition)
+
+            }))
+            addSystem(LetItSnowSystem(inject()))
             addSystem(LogSystem())
         }
     }

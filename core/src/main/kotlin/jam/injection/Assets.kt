@@ -41,6 +41,11 @@ class Assets(private val gameSettings: GameSettings) : DisposableRegistry by Dis
         scale(gameSettings.MetersPerPixel)
     }
 
+    val snowFlakeSprite = Sprite(Texture("snow-flake.png".toInternalFile())).apply {
+        setOriginCenter()
+        scale(gameSettings.MetersPerPixel)
+    }
+
     val presentSprite = Sprite(Texture("present.png".toInternalFile())).apply {
         setOriginCenter()
         scale(gameSettings.MetersPerPixel)
