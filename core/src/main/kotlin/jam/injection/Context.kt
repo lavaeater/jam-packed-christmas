@@ -146,7 +146,7 @@ object Context : InjectionContext() {
             addSystem(SteerSystem())
             //addSystem(CameraAndMapSystem(inject(), 0.75f, inject(),gameSettings.AspectRatio))
             addSystem(Box2dUpdateSystem(gameSettings.TimeStep, gameSettings.VelIters, gameSettings.PosIters))
-            addSystem(ChristmasCameraFollowSystem(inject(), 0.1f, false))
+            addSystem(ChristmasCameraFollowSystem(inject(), 0.1f, true))
             addSystem(SantaControlSystem())
             addSystem(KeyboardInputSystem(inject(), invertX = true, invertY = false))
             addSystem(RudolfNoseSystem())
