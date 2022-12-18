@@ -30,6 +30,9 @@ sealed class ChristmasProp(name: String) : PropName(name) {
 
 fun snowFlake(at: Vector2) {
     engine().entity {
+        with<IndexComponent> {
+            index = 7
+        }
         with<SpriteComponent> {
             sprite = assets().snowFlakeSprite
             scale = 0.25f
@@ -45,6 +48,9 @@ fun shootMissileAtSanta(from: Vector2, santaEntity: Entity) {
     val santaPosition = TransformComponent.get(santaEntity).position
     val targetAngleRad = (santaPosition - from).nor().angleRad()
     engine().entity {
+        with<IndexComponent> {
+            index = 4
+        }
         with<SpriteComponent> {
             sprite = assets().samSprite
             shadow = true
@@ -100,6 +106,9 @@ fun throwPresent(from: Vector2, to: Vector2) {
     val thrownPresent = engine().entity {
         with<ChristmasPresent>()
         with<TransformComponent>()
+        with<IndexComponent> {
+            index = 3
+        }
         with<SpriteComponent> {
             sprite = assets().presentSprite
             shadow = true
@@ -133,6 +142,9 @@ fun hoHoHo(christmasCheer: Float = 100f, follow: Boolean = false) {
     val carriageEntity = engine().entity {
         with<SantaClaus> {
             targetCity = inject<ChristmasMapManager>().getClosestCityThatNeedsGifts(Vector2.Zero)!!
+        }
+        with<IndexComponent> {
+            index = 5
         }
         with<ChristmasPropComponent> {
             props[ChristmasProp.ChristmasCheer] = CoolProp.FloatProperty(ChristmasProp.ChristmasCheer, christmasCheer)
@@ -174,6 +186,9 @@ fun hoHoHo(christmasCheer: Float = 100f, follow: Boolean = false) {
     engine().entity {
         with<Human>()
         with<Rudolf>()
+        with<IndexComponent> {
+            index = 5
+        }
         with<RedNose> {
             offset = 2f
             light = ConeLight(inject(), 16, Color.RED, 100f, 0f, 0f, 90f, 5f)

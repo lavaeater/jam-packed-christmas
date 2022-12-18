@@ -21,7 +21,6 @@ import ktx.math.times
 import ktx.math.vec2
 import space.earlygrey.shapedrawer.ShapeDrawer
 
-class FollowSantaSystem()
 
 class RenderSystem(
     private val batch: PolygonSpriteBatch,
@@ -31,7 +30,7 @@ class RenderSystem(
     private val rayHandler: RayHandler,
     private val christmasMapManager: ChristmasMapManager,
     private val debug: Boolean
-) : EntitySystem() {
+) :  EntitySystem() {
 
     private val dotColor = Color(1f, 0f, 0f, 0.5f)
     private val textureAndTransformFamily = allOf(SpriteComponent::class, TransformComponent::class).get()

@@ -6,8 +6,8 @@ import com.badlogic.gdx.utils.Pool
 import ktx.ashley.mapperFor
 
 class SnowFlake: Component, Pool.Poolable {
-    var timeToLive = 5f
-    var timeToLiveBase = 10f
+    var timeToLive = 25f
+    var timeToLiveBase = 25f
 
     override fun reset() {
         timeToLive = timeToLiveBase

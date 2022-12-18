@@ -17,7 +17,7 @@ import ktx.math.vec2
 
 class LetItSnowSystem(private val camera: OrthographicCamera) :
     IteratingSystem(allOf(SnowFlake::class).exclude(Remove::class).get()) {
-    private val snowFlakeMovementVector get() = vec2(0.15f + (-10..10).random() / 100f, 0.25f + (-10..10).random() / 100f)
+    private val snowFlakeMovementVector get() = vec2(0.5f + (-10..10).random() / 100f, 0.5f + (-10..10).random() / 100f)
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val snowFlake = SnowFlake.get(entity)
         snowFlake.timeToLive -= deltaTime
