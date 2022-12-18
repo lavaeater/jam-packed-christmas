@@ -35,7 +35,7 @@ fun snowFlake(at: Vector2) {
         }
         with<SpriteComponent> {
             sprite = assets().snowFlakeSprite
-            scale = 0.25f
+            scale = 0.15f
         }
         with<SnowFlake>()
         with<TransformComponent> {
@@ -85,8 +85,8 @@ fun shootMissileAtSanta(from: Vector2, santaEntity: Entity) {
         with<Box2dSteerable> {
             body = Box2d.get(this@entity.entity).body
             steeringBehavior = Seek(this, Box2dLocation(TransformComponent.get(santaEntity).position))
-            maxLinearSpeed = 50f
-            maxAngularSpeed = 25f
+            maxLinearSpeed = 40f
+            maxAngularSpeed = 30f
             maxLinearAcceleration = 5f
             maxAngularAcceleration = 10f
         }

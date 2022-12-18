@@ -148,7 +148,6 @@ object Context : InjectionContext() {
         return PooledEngine().apply {
             addSystem(RemoveEntitySystem())
             addSystem(SteerSystem())
-            //addSystem(CameraAndMapSystem(inject(), 0.75f, inject(),gameSettings.AspectRatio))
             addSystem(Box2dUpdateSystem(gameSettings.TimeStep, gameSettings.VelIters, gameSettings.PosIters))
             addSystem(ChristmasCameraFollowSystem(inject(), 0.1f, true))
             addSystem(SantaControlSystem())
@@ -169,11 +168,11 @@ object Context : InjectionContext() {
             addSystem(SamFuelSystem())
             addSystem(RemoveSamSiteSystem())
             addSystem(UpdateMemorySystem())
-            addSystem(EnsureEntitySystem(EnsureEntityDef(allOf(SnowFlake::class).get(), 100, 0.1f, true) {
+            addSystem(EnsureEntitySystem(EnsureEntityDef(allOf(SnowFlake::class).get(), 100, 0.25f, true) {
                 val camera = inject<OrthographicCamera>()
                 val snowFlakePosition = vec2(
-                    camera.position.x + (-100..100).random().toFloat(),
-                    camera.position.y + (-100..100).random().toFloat())
+                    camera.position.x + (-75..25).random().toFloat(),
+                    camera.position.y + (-50..50).random().toFloat())
 
                 snowFlake(snowFlakePosition)
 
