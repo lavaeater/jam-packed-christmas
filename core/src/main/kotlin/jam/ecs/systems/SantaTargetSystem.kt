@@ -2,6 +2,7 @@ package jam.ecs.systems
 
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
+import eater.ecs.ashley.components.ChristmasPropComponent
 import eater.ecs.ashley.components.TransformComponent
 import eater.injection.InjectionContext
 import jam.core.ScoreKeeper
@@ -16,6 +17,9 @@ class SantaTargetSystem(private val christmasMapManager: ChristmasMapManager) :
         val position = TransformComponent.get(entity).position
         if (!targetCity.needsGifts) {
             ScoreKeeper.difficulty++
+            val cheerProp = ChristmasPropComponent.get(entity).getChristmasCheer()
+            if(cheerProp.current < cheerProp.max)
+                cheerProp.current += cheerProp.current * 0.25f
             val cityThatNeedsGifts =
                 InjectionContext.inject<ChristmasMapManager>().getClosestCityThatNeedsGifts(position)
             if (cityThatNeedsGifts != null) {

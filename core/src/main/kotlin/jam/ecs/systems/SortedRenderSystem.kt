@@ -99,16 +99,16 @@ class SortedRenderSystem(private val batch: PolygonSpriteBatch,
         sprite.setScale(gameSettings.MetersPerPixel * spriteComponent.scale)
         sprite.rotation = transformComponent.angleDegrees - 90f
         sprite.draw(batch)
-        if (spriteComponent.shadow) {
-            sprite.color = blackColor
-            sprite.setOriginBasedPosition(
-                transformComponent.position.x + 10f, // Needs to be in relation to objects rotation somehow
-                transformComponent.position.y + 10f
-            )
-            sprite.setScale(gameSettings.MetersPerPixel / 2f * spriteComponent.scale)
-            sprite.draw(batch)
-            sprite.color = Color.WHITE
-        }
+//        if (spriteComponent.shadow) {
+//            sprite.color = blackColor
+//            sprite.setOriginBasedPosition(
+//                transformComponent.position.x + 10f, // Needs to be in relation to objects rotation somehow
+//                transformComponent.position.y + 10f
+//            )
+//            sprite.setScale(gameSettings.MetersPerPixel / 2f * spriteComponent.scale)
+//            sprite.draw(batch)
+//            sprite.color = Color.WHITE
+//        }
         if (ChristmasPresent.has(entity)) {
             spriteComponent.scale = spriteComponent.scale * 0.995f
         }

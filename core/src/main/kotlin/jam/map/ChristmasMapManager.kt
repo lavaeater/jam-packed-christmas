@@ -63,7 +63,7 @@ class ChristmasMapManager {
         val validPoints = outerBounds.wholePoints() - cityBounds.wholePoints().toSet()
         for (i in 1..city.difficulty) {
             val samPosition = validPoints.random()
-            val detectorRange = (15..75).random().toFloat()
+            val detectorRange = (15..35).random().toFloat() * city.difficulty
 
             engine.entity {
                 with<SamSite> {
@@ -79,7 +79,7 @@ class ChristmasMapManager {
                 }
                 with<AiComponent> {
                     val santaFamily = allOf(SantaClaus::class).get()
-                    val samCoolDownRange = (5..10)
+                    val samCoolDownRange = (3..10)
                     var coolDown = 0f
                     actions.addAll(
                         listOf(
@@ -87,7 +87,7 @@ class ChristmasMapManager {
                                 "Shoot if Santa is in Range, maan",
                                 0f..1f,
                                 { entity, deltaTime ->
-                                    if(coolDown <= 0f) {
+                                    if (coolDown <= 0f) {
                                         val samSitePosition = TransformComponent.get(entity).position
                                         val santaEntity = engine().getEntitiesFor(santaFamily).first()
                                         val santaPosition = TransformComponent.get(santaEntity).position
@@ -161,16 +161,13 @@ class ChristmasMapManager {
          */
         val city = City()
         cities.add(city)
-        val gridSize = 1..4
+        val gridSize = 2..4
         for (x in 0 until gridSize.random())
             for (y in 0 until gridSize.random()) {
-                val houseEntity = createHouseAt(at + vec2(x * maxGridSize * 2f, y * maxGridSize * 2f))
+                val houseEntity = createHouseAt(at + vec2(x * maxGridSize * 1.5f, y * maxGridSize * 1.5f))
                 city.houses.add(houseEntity)
                 allMapEntities.add(houseEntity)
             }
-
-        fixCityDifficulty(city)
-
     }
 
     private fun createHouseAt(at: Vector2): Entity {
