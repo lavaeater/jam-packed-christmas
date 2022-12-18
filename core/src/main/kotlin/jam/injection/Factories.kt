@@ -100,6 +100,7 @@ fun explosion(at:Vector2) {
         }
         with<LightExplosion>()
     }
+    assets().boom.play()
 }
 
 fun throwPresent(from: Vector2, to: Vector2) {

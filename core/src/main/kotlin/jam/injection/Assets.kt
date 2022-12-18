@@ -4,7 +4,11 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.NinePatch
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
+import de.pottgames.tuningfork.SoundBuffer
+import de.pottgames.tuningfork.SoundBufferLoader
+import de.pottgames.tuningfork.WaveLoader
 import eater.injection.InjectionContext.Companion.inject
+import eater.music.audio
 import jam.core.GameSettings
 import ktx.assets.DisposableContainer
 import ktx.assets.DisposableRegistry
@@ -56,6 +60,10 @@ class Assets(private val gameSettings: GameSettings) : DisposableRegistry by Dis
 
     val samSiteSprite = Sprite(Texture("city/sam-launcher.png".toInternalFile()))
     val samSprite = Sprite(Texture("city/sam.png".toInternalFile()))
+
+    val hohoho = audio().obtainSource(WaveLoader.load("audio/hohoho.wav".toInternalFile()))
+    val merryChristmas = audio().obtainSource(WaveLoader.load("audio/merry.wav".toInternalFile()))
+    val boom = audio().obtainSource(WaveLoader.load("audio/boom.wav".toInternalFile()))
 
     override fun dispose() {
         registeredDisposables.disposeSafely()

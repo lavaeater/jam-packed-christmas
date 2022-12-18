@@ -122,8 +122,8 @@ object Context : InjectionContext() {
             })
             bindSingleton(ChristmasMapManager())
             bindSingleton(ShapeDrawer(inject<PolygonSpriteBatch>() as Batch, shapeDrawerRegion))
-            bindSingleton(getEngine(gameSettings, false))
             bindSingleton(Assets(inject()))
+            bindSingleton(getEngine(gameSettings, false))
             bindSingleton(SplashScreen(inject()))
             bindSingleton(GameSelectScreen(inject()))
             bindSingleton(GameOverScreen(inject()))
@@ -180,7 +180,7 @@ object Context : InjectionContext() {
             }))
             addSystem(LetItSnowSystem(inject()))
             addSystem(LightExplosionSystem())
-            addSystem(SantaTargetSystem(inject()))
+            addSystem(SantaTargetSystem(inject(), inject()))
             addSystem(LogSystem())
         }
     }
