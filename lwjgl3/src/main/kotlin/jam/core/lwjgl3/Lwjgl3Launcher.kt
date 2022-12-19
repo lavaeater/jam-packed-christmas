@@ -11,7 +11,7 @@ fun main() {
     Lwjgl3Application(ChristmasGame(), Lwjgl3ApplicationConfiguration().apply {
         disableAudio(true)
         setTitle("jam-packed-christmas")
-        setWindowedMode(1920, 1080)
+        setWindowedMode(800, 600)
         setWindowIcon(*(arrayOf(128, 64, 32, 16).map { "libgdx$it.png" }.toTypedArray()))
     })
 }

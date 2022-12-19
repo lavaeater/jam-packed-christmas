@@ -168,10 +168,10 @@ object Context : InjectionContext() {
             addSystem(SamFuelSystem())
             addSystem(RemoveSamSiteSystem())
             addSystem(UpdateMemorySystem())
-            addSystem(EnsureEntitySystem(EnsureEntityDef(allOf(SnowFlake::class).get(), 100, 0.25f, true) {
+            addSystem(EnsureEntitySystem(EnsureEntityDef(allOf(SnowFlake::class).get(), 250, 0.05f, true) {
                 val camera = inject<OrthographicCamera>()
                 val snowFlakePosition = vec2(
-                    camera.position.x + (-75..25).random().toFloat(),
+                    camera.position.x + (-50..50).random().toFloat(),
                     camera.position.y + (-50..50).random().toFloat())
 
                 snowFlake(snowFlakePosition)

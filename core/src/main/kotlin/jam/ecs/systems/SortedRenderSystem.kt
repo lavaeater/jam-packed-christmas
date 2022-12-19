@@ -81,8 +81,8 @@ class SortedRenderSystem(private val batch: PolygonSpriteBatch,
                 0f,
                 house.width * gameSettings.PixelsPerMeter,
                 house.height * gameSettings.PixelsPerMeter,
-                gameSettings.MetersPerPixel * (0.5f + i / 15f),
-                gameSettings.MetersPerPixel * (0.5f + i / 15f),
+                gameSettings.MetersPerPixel * (0.5f + i / 8f),
+                gameSettings.MetersPerPixel * (0.5f + i / 8f),
                 0f
             )
         }

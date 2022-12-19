@@ -162,8 +162,10 @@ class ChristmasMapManager {
         val city = City()
         cities.add(city)
         val gridSize = 2..4
-        for (x in 0 until gridSize.random())
-            for (y in 0 until gridSize.random()) {
+        val rows = gridSize.random()
+        val columns = (2 .. (if(rows > 3) 3 else rows)).random()
+        for (x in 0 until columns)
+            for (y in 0 until rows) {
                 val houseEntity = createHouseAt(at + vec2(x * maxGridSize * 1.5f, y * maxGridSize * 1.5f))
                 city.houses.add(houseEntity)
                 allMapEntities.add(houseEntity)
