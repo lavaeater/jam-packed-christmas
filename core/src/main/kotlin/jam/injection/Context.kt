@@ -46,7 +46,7 @@ object Context : InjectionContext() {
         TextureRegion(texture, 0, 0, 1, 1)
     }
 
-    fun initialize(game: ChristmasGame) {
+    fun initialize(game: ChristmasGame, debugBox2d: Boolean) {
         buildContext {
             val gameSettings = GameSettings()
             bindSingleton(gameSettings)
@@ -91,7 +91,7 @@ object Context : InjectionContext() {
 
                                 samEntity.addComponent<Remove>()
 
-                                val coolProp = ChristmasPropComponent.get(santaClaus)
+                                val coolProp = EntityPropertyComponent.get(santaClaus)
                                 coolProp.getChristmasCheer().current -= (5..25).random().toFloat()
                             }
                         }
@@ -123,7 +123,7 @@ object Context : InjectionContext() {
             bindSingleton(ChristmasMapManager())
             bindSingleton(ShapeDrawer(inject<PolygonSpriteBatch>() as Batch, shapeDrawerRegion))
             bindSingleton(Assets(inject()))
-            bindSingleton(getEngine(gameSettings, false))
+            bindSingleton(getEngine(gameSettings, debugBox2d))
             bindSingleton(SplashScreen(inject()))
             bindSingleton(SampleExplorerScreen(inject<ChristmasGame>()))
             bindSingleton(MusicVisualizerScreen(inject<ChristmasGame>()))

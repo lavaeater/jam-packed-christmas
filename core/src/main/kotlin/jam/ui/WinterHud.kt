@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Widget
 import com.badlogic.gdx.utils.Align
-import eater.ecs.ashley.components.ChristmasPropComponent
+import eater.ecs.ashley.components.EntityPropertyComponent
 import eater.extensions.boundLabel
 import eater.extensions.boundProgressBar
 import eater.injection.InjectionContext.Companion.inject
@@ -17,9 +17,7 @@ import jam.ecs.systems.getChristmasCheer
 import jam.map.ChristmasMapManager
 import ktx.actors.stage
 import ktx.ashley.allOf
-import ktx.ashley.get
 import ktx.scene2d.actors
-import ktx.scene2d.container
 import ktx.scene2d.label
 import ktx.scene2d.table
 
@@ -33,9 +31,9 @@ class WinterHud(batch: PolygonSpriteBatch, private val engine: Engine) : LavaHud
 
     private val christmasMapManager by lazy { inject<ChristmasMapManager>() }
     private val citiesLeftToVisit get() = christmasMapManager.cities.filter { it.needsGifts }
-    private val santaFamily = allOf(SantaClaus::class, ChristmasPropComponent::class).get()
+    private val santaFamily = allOf(SantaClaus::class, EntityPropertyComponent::class).get()
     private val santaEntity get() = engine.getEntitiesFor(santaFamily).first()
-    private val christmasCheer get() = ChristmasPropComponent.get(santaEntity).getChristmasCheer()
+    private val christmasCheer get() = EntityPropertyComponent.get(santaEntity).getChristmasCheer()
 
     override val stage: Stage by lazy {
 

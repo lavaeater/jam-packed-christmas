@@ -1,6 +1,6 @@
 import kotlin.experimental.or
 
-object Categories {
+object Box2dCategories {
     const val none: Short = 0
     const val samSite: Short = 1
     const val present: Short = 2

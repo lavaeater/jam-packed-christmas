@@ -23,14 +23,14 @@ import ktx.math.minus
 import ktx.math.plus
 import ktx.math.vec2
 
-sealed class ChristmasProp(name: String) : PropName(name) {
-    object ChristmasCheer : ChristmasProp("Cheer")
-    object NaughtyHealth: ChristmasProp("Naughty Health")
+sealed class ChristmasProperty(name: String) : PropertyName(name) {
+    object ChristmasCheer : ChristmasProperty("Cheer")
+    object NaughtyHealth: ChristmasProperty("Naughty Health")
 }
 
 fun snowFlake(at: Vector2) {
     engine().entity {
-        with<IndexComponent> {
+        with<ZIndexComponent> {
             index = 7
         }
         with<SpriteComponent> {
@@ -48,7 +48,7 @@ fun shootMissileAtSanta(from: Vector2, santaEntity: Entity) {
     val santaPosition = TransformComponent.get(santaEntity).position
     val targetAngleRad = (santaPosition - from).nor().angleRad()
     engine().entity {
-        with<IndexComponent> {
+        with<ZIndexComponent> {
             index = 4
         }
         with<SpriteComponent> {
@@ -76,8 +76,8 @@ fun shootMissileAtSanta(from: Vector2, santaEntity: Entity) {
                 box(0.25f, 1f) {
                     density = 0.5f
                     filter {
-                        categoryBits = Categories.actualSam
-                        maskBits = Categories.whatActualSamCollidesWith
+                        categoryBits = Box2dCategories.actualSam
+                        maskBits = Box2dCategories.whatActualSamCollidesWith
                     }
                 }
             }
@@ -107,7 +107,7 @@ fun throwPresent(from: Vector2, to: Vector2) {
     val thrownPresent = engine().entity {
         with<ChristmasPresent>()
         with<TransformComponent>()
-        with<IndexComponent> {
+        with<ZIndexComponent> {
             index = 3
         }
         with<SpriteComponent> {
@@ -126,8 +126,8 @@ fun throwPresent(from: Vector2, to: Vector2) {
                 box(2f, 1f) {
                     density = 0.01f
                     filter {
-                        categoryBits = Categories.present
-                        maskBits = Categories.whatPresentsCollideWith
+                        categoryBits = Box2dCategories.present
+                        maskBits = Box2dCategories.whatPresentsCollideWith
                     }
                 }
             }
@@ -144,11 +144,11 @@ fun hoHoHo(christmasCheer: Float = 100f, follow: Boolean = false) {
         with<SantaClaus> {
             targetCity = inject<ChristmasMapManager>().getClosestCityThatNeedsGifts(Vector2.Zero)!!
         }
-        with<IndexComponent> {
+        with<ZIndexComponent> {
             index = 5
         }
-        with<ChristmasPropComponent> {
-            props[ChristmasProp.ChristmasCheer] = CoolProp.FloatProperty(ChristmasProp.ChristmasCheer, christmasCheer)
+        with<EntityPropertyComponent> {
+            props[ChristmasProperty.ChristmasCheer] = SimpleProperty.FloatProperty(ChristmasProperty.ChristmasCheer, christmasCheer)
         }
         with<Box2d> {
             body = world().body {
@@ -164,15 +164,15 @@ fun hoHoHo(christmasCheer: Float = 100f, follow: Boolean = false) {
                 box(2.5f, 4f) {
                     density = 0.0001f
                     filter {
-                        categoryBits = Categories.santa
-                        maskBits = Categories.whatSantaCollidesWith
+                        categoryBits = Box2dCategories.santa
+                        maskBits = Box2dCategories.whatSantaCollidesWith
                     }
                 }
                 circle(15f) {
                     isSensor = true
                     filter {
-                        categoryBits = Categories.santasSense
-                        maskBits = Categories.whatSantasSenseCollidesWith
+                        categoryBits = Box2dCategories.santasSense
+                        maskBits = Box2dCategories.whatSantasSenseCollidesWith
                     }
                 }
             }
@@ -187,7 +187,7 @@ fun hoHoHo(christmasCheer: Float = 100f, follow: Boolean = false) {
     engine().entity {
         with<Human>()
         with<Rudolf>()
-        with<IndexComponent> {
+        with<ZIndexComponent> {
             index = 5
         }
         with<RedNose> {
@@ -214,8 +214,8 @@ fun hoHoHo(christmasCheer: Float = 100f, follow: Boolean = false) {
                 box(2.5f, 4f) {
                     density = 0.1f
                     filter {
-                        categoryBits = Categories.santa
-                        maskBits = Categories.whatSantaCollidesWith
+                        categoryBits = Box2dCategories.santa
+                        maskBits = Box2dCategories.whatSantaCollidesWith
                     }
                 }
             }.apply {

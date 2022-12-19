@@ -19,7 +19,7 @@ class ChristmasGame : MainGame() {
         KtxAsync.initiate()
         Gdx.app.logLevel = LOG_INFO
 
-        Context.initialize(this)
+        Context.initialize(this, false)
 
         addScreen(inject<SplashScreen>())
         addScreen(inject<GameSelectScreen>())

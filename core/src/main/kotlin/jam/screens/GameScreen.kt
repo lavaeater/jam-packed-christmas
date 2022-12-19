@@ -6,11 +6,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import eater.core.MainGame
+import eater.core.toColor
 import eater.ecs.ashley.components.Remove
 import eater.input.CommandMap
 import eater.input.KeyPress
 import eater.physics.addComponent
-import jam.core.toColor
 import jam.ecs.systems.SortedRenderSystem
 import ktx.app.KtxInputAdapter
 import ktx.app.KtxScreen

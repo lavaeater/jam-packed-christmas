@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch
 import eater.ecs.ashley.components.Box2d
+import eater.ecs.ashley.components.SpriteComponent
 import eater.ecs.ashley.components.TransformComponent
 import eater.injection.InjectionContext.Companion.inject
 import jam.core.GameSettings

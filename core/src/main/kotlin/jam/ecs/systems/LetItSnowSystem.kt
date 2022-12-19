@@ -9,12 +9,11 @@ import eater.ecs.ashley.components.Remove
 import eater.ecs.ashley.components.TransformComponent
 import eater.physics.addComponent
 import jam.ecs.components.SnowFlake
-import jam.ecs.components.SpriteComponent
+import eater.ecs.ashley.components.SpriteComponent
 import ktx.ashley.allOf
 import ktx.ashley.exclude
 import ktx.math.plus
 import ktx.math.times
-import ktx.math.vec2
 
 class LetItSnowSystem(private val camera: OrthographicCamera) :
     IteratingSystem(allOf(SnowFlake::class).exclude(Remove::class).get()) {

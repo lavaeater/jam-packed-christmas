@@ -6,12 +6,12 @@ import com.badlogic.ashley.systems.SortedIteratingSystem
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch
-import eater.ecs.ashley.components.IndexComponent
+import eater.ecs.ashley.components.ZIndexComponent
 import eater.ecs.ashley.components.TransformComponent
 import jam.core.GameSettings
 import jam.ecs.components.ChristmasPresent
 import jam.ecs.components.House
-import jam.ecs.components.SpriteComponent
+import eater.ecs.ashley.components.SpriteComponent
 import jam.injection.assets
 import jam.map.ChristmasMapManager
 import ktx.ashley.allOf
@@ -28,10 +28,10 @@ class SortedRenderSystem(private val batch: PolygonSpriteBatch,
                          private val gameSettings: GameSettings,
                          private val rayHandler: RayHandler,
                          private val christmasMapManager: ChristmasMapManager,
-                         private val debug: Boolean) : SortedIteratingSystem(allOf(IndexComponent::class).get(),
+                         private val debug: Boolean) : SortedIteratingSystem(allOf(ZIndexComponent::class).get(),
     Comparator<Entity> { p0, p1 ->
-        val i0 = IndexComponent.get(p0).index
-        val i1 = IndexComponent.get(p1).index
+        val i0 = ZIndexComponent.get(p0).index
+        val i1 = ZIndexComponent.get(p1).index
         i0.compareTo(i1)
     }) {
     private val dotColor = Color(1f, 0f, 0f, 0.5f)

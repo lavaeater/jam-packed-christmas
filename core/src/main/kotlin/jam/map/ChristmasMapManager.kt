@@ -1,7 +1,7 @@
 package jam.map
 
-import Categories
-import ChristmasProp
+import Box2dCategories
+import ChristmasProperty
 import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
@@ -9,9 +9,9 @@ import com.badlogic.gdx.physics.box2d.BodyDef
 import eater.ai.ashley.AiComponent
 import eater.ai.ashley.ConsideredAction
 import eater.core.engine
+import eater.core.wholePoints
 import eater.core.world
 import eater.ecs.ashley.components.*
-import jam.core.wholePoints
 import jam.ecs.components.*
 import jam.injection.assets
 import ktx.ashley.allOf
@@ -69,12 +69,12 @@ class ChristmasMapManager {
                 with<SamSite> {
                     this.city = city
                 }
-                with<IndexComponent> {
+                with<ZIndexComponent> {
                     index = 1
                 }
                 with<TransformComponent>()
-                with<ChristmasPropComponent> {
-                    props[ChristmasProp.NaughtyHealth] = CoolProp.FloatProperty(ChristmasProp.NaughtyHealth)
+                with<EntityPropertyComponent> {
+                    props[ChristmasProperty.NaughtyHealth] = SimpleProperty.FloatProperty(ChristmasProperty.NaughtyHealth)
 
                 }
                 with<AiComponent> {
@@ -120,15 +120,15 @@ class ChristmasMapManager {
                         box(1f, 1f) {
                             density = 0.1f
                             filter {
-                                categoryBits = Categories.samSite
-                                maskBits = Categories.whatSamSitesCollideWith
+                                categoryBits = Box2dCategories.samSite
+                                maskBits = Box2dCategories.whatSamSitesCollideWith
                             }
                         }
                         circle(detectorRange) {
                             isSensor = true
                             filter {
-                                categoryBits = Categories.samSite
-                                maskBits = Categories.whatSamSitesCollideWith
+                                categoryBits = Box2dCategories.samSite
+                                maskBits = Box2dCategories.whatSamSitesCollideWith
                             }
                         }
                     }
@@ -174,7 +174,7 @@ class ChristmasMapManager {
         val width = sizeRange.random()
         val height = sizeRange.random()
         return engine.entity {
-            with<IndexComponent> {
+            with<ZIndexComponent> {
                 index = 2
             }
             with<TransformComponent> {
@@ -192,8 +192,8 @@ class ChristmasMapManager {
                     box(width.toFloat(), height.toFloat()) {
                         density = 0.1f
                         filter {
-                            categoryBits = Categories.house
-                            maskBits = Categories.whatHousesCollideWith
+                            categoryBits = Box2dCategories.house
+                            maskBits = Box2dCategories.whatHousesCollideWith
                         }
                     }
                 }
@@ -208,7 +208,7 @@ class ChristmasMapManager {
 
     private fun createTerrainThingAt(at: Vector2): Entity {
         return engine.entity {
-            with<IndexComponent>()
+            with<ZIndexComponent>()
             with<TransformComponent> {
                 position.set(at)
             }
@@ -216,7 +216,7 @@ class ChristmasMapManager {
             with<SpriteComponent> {
                 sprite = assets().terrainSprite
             }
-            with<IndexComponent>()
+            with<ZIndexComponent>()
         }
     }
 }
