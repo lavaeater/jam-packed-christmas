@@ -57,14 +57,14 @@ class SortedRenderSystem(private val batch: PolygonSpriteBatch,
 
     override fun processEntity(entity: Entity, deltaTime: Float) {
         if(SpriteComponent.has(entity)) {
-            renderSprite(entity, deltaTime)
+            renderSprite(entity)
         }
         if(House.has(entity)) {
-            renderHouse(entity, deltaTime)
+            renderHouse(entity)
         }
     }
 
-    private fun renderHouse(entity: Entity, deltaTime: Float) {
+    private fun renderHouse(entity: Entity) {
         val housePosition = TransformComponent.get(entity).position
         val house = House.get(entity)
         var houseDrawPos = vec2(
@@ -91,7 +91,7 @@ class SortedRenderSystem(private val batch: PolygonSpriteBatch,
         }
     }
 
-    private fun renderSprite(entity: Entity, deltaTime: Float) {
+    private fun renderSprite(entity: Entity) {
         val transformComponent = TransformComponent.get(entity)
         val spriteComponent = SpriteComponent.get(entity)
         val sprite = spriteComponent.sprite

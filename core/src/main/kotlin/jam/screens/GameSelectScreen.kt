@@ -23,6 +23,8 @@ class GameSelectScreen(mainGame: ChristmasGame) : BasicScreen(
     init {
         commandMap = command("GameSelectCommands") {
             setUp(Input.Keys.SPACE, "STart Game") { mainGame.goToGameScreen() }
+            setUp(Input.Keys.M, "Music Visualizer") { mainGame.goToMusicVisualizer() }
+            setUp(Input.Keys.S, "Sample Explorer") { mainGame.goToSampleExplorer() }
         }
     }
 

@@ -22,7 +22,7 @@ class GameOverSystem(private val christmasMapManager: ChristmasMapManager, priva
         }
 
         val santaClaus = engine.getEntitiesFor(santaAndHealthFamily).first()
-        if(ChristmasPropComponent.get(santaClaus).getChristmasCheer()?.current!! <= 0f) {
+        if(ChristmasPropComponent.get(santaClaus).getChristmasCheer().current <= 0f) {
             mainGame.goToGameOver()
         }
 

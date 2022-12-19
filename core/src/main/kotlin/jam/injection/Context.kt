@@ -18,6 +18,8 @@ import eater.ecs.ashley.components.*
 import eater.ecs.ashley.systems.*
 import eater.injection.InjectionContext
 import eater.physics.addComponent
+import eater.screens.MusicVisualizerScreen
+import eater.screens.SampleExplorerScreen
 import explosion
 import jam.core.ChristmasGame
 import jam.core.GameSettings
@@ -125,6 +127,8 @@ object Context : InjectionContext() {
             bindSingleton(Assets(inject()))
             bindSingleton(getEngine(gameSettings, false))
             bindSingleton(SplashScreen(inject()))
+            bindSingleton(SampleExplorerScreen(inject<ChristmasGame>()))
+            bindSingleton(MusicVisualizerScreen(inject<ChristmasGame>()))
             bindSingleton(GameSelectScreen(inject()))
             bindSingleton(GameOverScreen(inject()))
             bindSingleton(GameVictoryScreen(inject()))

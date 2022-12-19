@@ -10,7 +10,7 @@ buildscript {
 	}
 	dependencies {
 		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-
+		classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlinVersion"
 	}
 }
 
@@ -22,6 +22,8 @@ allprojects {
 configure(subprojects) {
 	apply plugin: 'java-library'
 	apply plugin: 'kotlin'
+	apply plugin: 'kotlinx-serialization'
+
 	sourceCompatibility = 1.8
 	compileJava {
 		options.incremental = true

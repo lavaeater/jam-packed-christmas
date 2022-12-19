@@ -4,11 +4,17 @@ import com.badlogic.gdx.Application.LOG_INFO
 import com.badlogic.gdx.Gdx
 import eater.core.MainGame
 import eater.injection.InjectionContext.Companion.inject
+import eater.screens.MusicVisualizerScreen
+import eater.screens.SampleExplorerScreen
 import jam.injection.Context
 import jam.screens.*
 import ktx.async.KtxAsync
 
 class ChristmasGame : MainGame() {
+    override fun goToGameSelect() {
+        setScreen<GameSelectScreen>()
+    }
+
     override fun create() {
         KtxAsync.initiate()
         Gdx.app.logLevel = LOG_INFO
@@ -19,24 +25,31 @@ class ChristmasGame : MainGame() {
         addScreen(inject<GameSelectScreen>())
         addScreen(inject<GameOverScreen>())
         addScreen(inject<GameVictoryScreen>())
+        addScreen(inject<MusicVisualizerScreen>())
+        addScreen(inject<SampleExplorerScreen>())
         addScreen(inject<GameScreen>())
         setScreen<SplashScreen>()
     }
 
-    fun goToGameSelect() {
-        setScreen<GameSelectScreen>()
-    }
 
-    fun goToGameScreen() {
+    override fun goToGameScreen() {
         setScreen<GameScreen>()
     }
 
-    fun goToGameOver() {
+    override fun goToGameOver() {
         setScreen<GameOverScreen>()
     }
 
-    fun gotoGameVictory() {
+    override fun gotoGameVictory() {
         setScreen<GameVictoryScreen>()
+    }
+
+    fun goToMusicVisualizer() {
+        setScreen<MusicVisualizerScreen>()
+    }
+
+    fun goToSampleExplorer() {
+        setScreen<SampleExplorerScreen>()
     }
 }
 
