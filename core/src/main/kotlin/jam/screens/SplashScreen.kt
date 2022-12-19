@@ -1,22 +1,19 @@
 package jam.screens
 
 import com.badlogic.gdx.Input
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.utils.Align
-import eater.core.MainGame
-import eater.extensions.boundLabel
 import eater.input.command
-import eater.screens.BasicScreen
+import eater.screens.ScreenWithStage
 import jam.core.ChristmasGame
 import ktx.actors.stage
-import ktx.app.clearScreen
-import ktx.assets.disposeSafely
 import ktx.assets.toInternalFile
-import ktx.graphics.use
-import ktx.scene2d.*
+import ktx.scene2d.actors
+import ktx.scene2d.image
+import ktx.scene2d.label
 
-class SplashScreen(mainGame: ChristmasGame) : BasicScreen(
-    mainGame
+class SplashScreen(mainGame: ChristmasGame) : ScreenWithStage(
+    mainGame, Color(0f, 0.3f, 0.6f, 1f)
 ) {
 
     init {
@@ -25,23 +22,13 @@ class SplashScreen(mainGame: ChristmasGame) : BasicScreen(
         }
     }
 
-    private val stage by lazy {
-            stage().apply {
-                actors {
-                    image(Texture("images/splash.png".toInternalFile())).setFillParent(true)
-                    label("SPLASH - PRESS SPACE")
-                }
+    override val stage by lazy {
+        stage().apply {
+            actors {
+                image(Texture("images/splash.png".toInternalFile())).setFillParent(true)
+                label("SPLASH - PRESS SPACE")
             }
         }
-
-
-    override fun render(delta: Float) {
-        clearScreen(red = 0f, green = 0.3f, blue = 0.6f)
-        stage.act(delta)
-        stage.draw()
     }
 
-    override fun dispose() {
-        batch.disposeSafely()
-    }
 }

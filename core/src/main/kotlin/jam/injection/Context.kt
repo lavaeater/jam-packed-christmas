@@ -1,6 +1,5 @@
 package jam.injection
 
-import ChristmasProp
 import box2dLight.RayHandler
 import com.badlogic.ashley.core.Engine
 import com.badlogic.ashley.core.PooledEngine
@@ -8,7 +7,6 @@ import com.badlogic.gdx.graphics.*
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
-import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.Contact
 import com.badlogic.gdx.physics.box2d.ContactImpulse
 import com.badlogic.gdx.physics.box2d.ContactListener
@@ -134,7 +132,7 @@ object Context : InjectionContext() {
             bindSingleton(GameVictoryScreen(inject()))
             bindSingleton(WinterHud(inject(), inject()))
             bindSingleton(
-                GameScreen(
+                ChristmasGameScreen(
                     inject(),
                     inject(),
                     inject(),

@@ -27,13 +27,13 @@ class ChristmasGame : MainGame() {
         addScreen(inject<GameVictoryScreen>())
         addScreen(inject<MusicVisualizerScreen>())
         addScreen(inject<SampleExplorerScreen>())
-        addScreen(inject<GameScreen>())
+        addScreen(inject<ChristmasGameScreen>())
         setScreen<SplashScreen>()
     }
 
 
     override fun goToGameScreen() {
-        setScreen<GameScreen>()
+        setScreen<ChristmasGameScreen>()
     }
 
     override fun goToGameOver() {
