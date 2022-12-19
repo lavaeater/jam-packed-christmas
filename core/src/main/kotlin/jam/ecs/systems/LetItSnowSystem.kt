@@ -20,11 +20,11 @@ class LetItSnowSystem(private val camera: OrthographicCamera) :
     override fun processEntity(entity: Entity, deltaTime: Float) {
         val snowFlake = SnowFlake.get(entity)
         snowFlake.timeToLive -= deltaTime
-        if((1..5).random() == 1)
-            snowFlake.movementVector.set(snowFlake.movementVector.x + (-10..10).random() / 100f, snowFlake.movementVector.y)
+        if((1..20).random() == 1)
+            snowFlake.movementVector.set(snowFlake.movementVector.x + (-20..20).random() / 100f, snowFlake.movementVector.y)
 
-        if((1..5).random() == 1)
-            snowFlake.movementVector.set(snowFlake.movementVector.x, snowFlake.movementVector.y + (-10..10).random() / 100f)
+        if((1..20).random() == 1)
+            snowFlake.movementVector.set(snowFlake.movementVector.x, snowFlake.movementVector.y + (-20..20).random() / 100f)
 
 
         if (snowFlake.timeToLive <= 0f) {

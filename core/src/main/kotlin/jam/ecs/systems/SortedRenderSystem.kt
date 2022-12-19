@@ -16,10 +16,7 @@ import jam.injection.assets
 import jam.map.ChristmasMapManager
 import ktx.ashley.allOf
 import ktx.graphics.use
-import ktx.math.minus
-import ktx.math.plus
-import ktx.math.times
-import ktx.math.vec2
+import ktx.math.*
 import space.earlygrey.shapedrawer.ShapeDrawer
 
 class SortedRenderSystem(private val batch: PolygonSpriteBatch,
@@ -75,7 +72,7 @@ class SortedRenderSystem(private val batch: PolygonSpriteBatch,
         val cameraDiff = (houseDrawPos - camera2dPosition).clamp(0f, 100f).scl(0.02f)
         val patch = assets().houseNinePatch
         for(i in 0..house.floors) {
-            houseDrawPos += cameraDiff * (i.toFloat() / 10f)
+            houseDrawPos.plusAssign(cameraDiff * (i.toFloat() / 10f))
             patch.draw(
                 batch,
                 houseDrawPos.x,
@@ -95,20 +92,11 @@ class SortedRenderSystem(private val batch: PolygonSpriteBatch,
         val transformComponent = TransformComponent.get(entity)
         val spriteComponent = SpriteComponent.get(entity)
         val sprite = spriteComponent.sprite
-        sprite.setOriginBasedPosition(transformComponent.position.x, transformComponent.position.y)
         sprite.setScale(gameSettings.MetersPerPixel * spriteComponent.scale)
         sprite.rotation = transformComponent.angleDegrees - 90f
+        sprite.setOriginBasedPosition(transformComponent.position.x, transformComponent.position.y)
+        sprite.setScale(gameSettings.MetersPerPixel * spriteComponent.scale)
         sprite.draw(batch)
-//        if (spriteComponent.shadow) {
-//            sprite.color = blackColor
-//            sprite.setOriginBasedPosition(
-//                transformComponent.position.x + 10f, // Needs to be in relation to objects rotation somehow
-//                transformComponent.position.y + 10f
-//            )
-//            sprite.setScale(gameSettings.MetersPerPixel / 2f * spriteComponent.scale)
-//            sprite.draw(batch)
-//            sprite.color = Color.WHITE
-//        }
         if (ChristmasPresent.has(entity)) {
             spriteComponent.scale = spriteComponent.scale * 0.995f
         }
