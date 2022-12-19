@@ -125,8 +125,6 @@ object Context : InjectionContext() {
             bindSingleton(Assets(inject()))
             bindSingleton(getEngine(gameSettings, debugBox2d))
             bindSingleton(SplashScreen(inject()))
-            bindSingleton(SampleExplorerScreen(inject<ChristmasGame>()))
-            bindSingleton(MusicVisualizerScreen(inject<ChristmasGame>()))
             bindSingleton(GameSelectScreen(inject()))
             bindSingleton(GameOverScreen(inject()))
             bindSingleton(GameVictoryScreen(inject()))

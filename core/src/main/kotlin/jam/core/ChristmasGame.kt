@@ -25,8 +25,6 @@ class ChristmasGame : MainGame() {
         addScreen(inject<GameSelectScreen>())
         addScreen(inject<GameOverScreen>())
         addScreen(inject<GameVictoryScreen>())
-        addScreen(inject<MusicVisualizerScreen>())
-        addScreen(inject<SampleExplorerScreen>())
         addScreen(inject<ChristmasGameScreen>())
         setScreen<SplashScreen>()
     }
