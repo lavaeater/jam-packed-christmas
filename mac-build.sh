@@ -7,7 +7,7 @@ java -jar ../turbo-build/packr-all-4.0.0.jar \
      --useZgcIfSupportedOs \
      --executable jam-packed-christmas \
      --classpath ./lwjgl3/build/lib/jam-packed-christmas-1.0.0.jar \
-     --mainclass dark.core.lwjgl3.Lwjgl3Launcher \
+     --mainclass jam.core.lwjgl3.Lwjgl3Launcher \
      --vmargs Xmx1G \
      --resources assets/* \
      --output ../turbo-build/out-mac
