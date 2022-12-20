@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport
 import eater.input.command
 import hoHoHo
 import jam.core.ChristmasGame
-import jam.core.GameSettings
+import eater.core.GameSettings
 import jam.map.ChristmasMapManager
 import jam.ui.WinterHud
 

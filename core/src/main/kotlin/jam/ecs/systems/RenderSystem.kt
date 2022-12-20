@@ -9,7 +9,7 @@ import eater.ecs.ashley.components.Box2d
 import eater.ecs.ashley.components.SpriteComponent
 import eater.ecs.ashley.components.TransformComponent
 import eater.injection.InjectionContext.Companion.inject
-import jam.core.GameSettings
+import eater.core.GameSettings
 import jam.core.ScoreKeeper
 import jam.ecs.components.*
 import jam.injection.assets
@@ -57,7 +57,7 @@ class RenderSystem(
             val spriteComponent = SpriteComponent.get(entity)
             val sprite = spriteComponent.sprite
             sprite.setOriginBasedPosition(transformComponent.position.x, transformComponent.position.y)
-            sprite.setScale(gameSettings.MetersPerPixel * spriteComponent.scale)
+            sprite.setScale(gameSettings.metersPerPixel * spriteComponent.scale)
             sprite.rotation = transformComponent.angleDegrees - 90f
             sprite.draw(batch)
             if (spriteComponent.shadow) {
@@ -66,7 +66,7 @@ class RenderSystem(
                     transformComponent.position.x + 10f, // Needs to be in relation to objects rotation somehow
                     transformComponent.position.y + 10f
                 )
-                sprite.setScale(gameSettings.MetersPerPixel / 2f * spriteComponent.scale)
+                sprite.setScale(gameSettings.metersPerPixel / 2f * spriteComponent.scale)
                 sprite.draw(batch)
                 sprite.color = Color.WHITE
             }
@@ -112,10 +112,10 @@ class RenderSystem(
                     houseDrawPos.y,
                     0f,
                     0f,
-                    house.width * gameSettings.PixelsPerMeter,
-                    house.height * gameSettings.PixelsPerMeter,
-                    gameSettings.MetersPerPixel * (1f + i / 15f),
-                    gameSettings.MetersPerPixel * (1f + i / 15f),
+                    house.width * gameSettings.pixelsPerMeter,
+                    house.height * gameSettings.pixelsPerMeter,
+                    gameSettings.metersPerPixel * (1f + i / 15f),
+                    gameSettings.metersPerPixel * (1f + i / 15f),
                     0f
                 )
             }

@@ -4,12 +4,10 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.NinePatch
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
-import de.pottgames.tuningfork.SoundBuffer
-import de.pottgames.tuningfork.SoundBufferLoader
 import de.pottgames.tuningfork.WaveLoader
 import eater.injection.InjectionContext.Companion.inject
 import eater.music.audio
-import jam.core.GameSettings
+import eater.core.GameSettings
 import ktx.assets.DisposableContainer
 import ktx.assets.DisposableRegistry
 import ktx.assets.disposeSafely
@@ -37,22 +35,22 @@ class Assets(private val gameSettings: GameSettings) : DisposableRegistry by Dis
     val terrainSprite = Sprite(Texture("terrain/terrain.png".toInternalFile()))
     val deerSprite = Sprite(Texture("deer.png".toInternalFile())).apply {
         setOriginCenter()
-        scale(gameSettings.MetersPerPixel)
+        scale(gameSettings.metersPerPixel)
     }
     val sleighSprite = Sprite(Texture("sleigh.png".toInternalFile())).apply {
         setOriginCenter()
         flip(false, false)
-        scale(gameSettings.MetersPerPixel)
+        scale(gameSettings.metersPerPixel)
     }
 
     val snowFlakeSprite = Sprite(Texture("snow-flake.png".toInternalFile())).apply {
         setOriginCenter()
-        scale(gameSettings.MetersPerPixel)
+        scale(gameSettings.metersPerPixel)
     }
 
     val presentSprite = Sprite(Texture("present.png".toInternalFile())).apply {
         setOriginCenter()
-        scale(gameSettings.MetersPerPixel)
+        scale(gameSettings.metersPerPixel)
     }
 
     val houseTopTexture = Texture("city/housetop-1.png".toInternalFile())

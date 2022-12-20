@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch
 import eater.ecs.ashley.components.ZIndexComponent
 import eater.ecs.ashley.components.TransformComponent
-import jam.core.GameSettings
+import eater.core.GameSettings
 import jam.ecs.components.ChristmasPresent
 import jam.ecs.components.House
 import eater.ecs.ashley.components.SpriteComponent
@@ -69,20 +69,20 @@ class SortedRenderSystem(private val batch: PolygonSpriteBatch,
             housePosition.y - (house.height / 2f)
         )
 
-        val cameraDiff = (houseDrawPos - camera2dPosition).clamp(0f, 100f).scl(0.02f)
+        val cameraDiff = (houseDrawPos - camera2dPosition).clamp(0f, 100f).scl(0.05f)
         val patch = assets().houseNinePatch
         for(i in 0..house.floors) {
-            houseDrawPos.plusAssign(cameraDiff * (i.toFloat() / 10f))
+            houseDrawPos.plusAssign(cameraDiff * (i.toFloat() / 5f))
             patch.draw(
                 batch,
                 houseDrawPos.x,
                 houseDrawPos.y,
                 0f,
                 0f,
-                house.width * gameSettings.PixelsPerMeter,
-                house.height * gameSettings.PixelsPerMeter,
-                gameSettings.MetersPerPixel * (0.5f + i / 8f),
-                gameSettings.MetersPerPixel * (0.5f + i / 8f),
+                house.width * gameSettings.pixelsPerMeter,
+                house.height * gameSettings.pixelsPerMeter,
+                gameSettings.metersPerPixel * (0.25f + i / 4f),
+                gameSettings.metersPerPixel * (0.25f + i / 4f),
                 0f
             )
         }
@@ -92,10 +92,10 @@ class SortedRenderSystem(private val batch: PolygonSpriteBatch,
         val transformComponent = TransformComponent.get(entity)
         val spriteComponent = SpriteComponent.get(entity)
         val sprite = spriteComponent.sprite
-        sprite.setScale(gameSettings.MetersPerPixel * spriteComponent.scale)
+        sprite.setScale(gameSettings.metersPerPixel * spriteComponent.scale)
         sprite.rotation = transformComponent.angleDegrees - 90f
         sprite.setOriginBasedPosition(transformComponent.position.x, transformComponent.position.y)
-        sprite.setScale(gameSettings.MetersPerPixel * spriteComponent.scale)
+        sprite.setScale(gameSettings.metersPerPixel * spriteComponent.scale)
         sprite.draw(batch)
         if (ChristmasPresent.has(entity)) {
             spriteComponent.scale = spriteComponent.scale * 0.995f

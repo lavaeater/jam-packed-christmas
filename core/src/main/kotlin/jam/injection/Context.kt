@@ -16,11 +16,9 @@ import eater.ecs.ashley.components.*
 import eater.ecs.ashley.systems.*
 import eater.injection.InjectionContext
 import eater.physics.addComponent
-import eater.screens.MusicVisualizerScreen
-import eater.screens.SampleExplorerScreen
 import explosion
 import jam.core.ChristmasGame
-import jam.core.GameSettings
+import eater.core.GameSettings
 import jam.ecs.components.*
 import jam.ecs.systems.*
 import jam.map.ChristmasMapManager
@@ -56,8 +54,8 @@ object Context : InjectionContext() {
             bindSingleton(OrthographicCamera())
             bindSingleton(
                 ExtendViewport(
-                    gameSettings.GameWidth,
-                    gameSettings.GameHeight,
+                    gameSettings.gameWidth,
+                    gameSettings.gameHeight,
                     inject<OrthographicCamera>() as Camera
                 )
             )
@@ -148,7 +146,7 @@ object Context : InjectionContext() {
         return PooledEngine().apply {
             addSystem(RemoveEntitySystem())
             addSystem(SteerSystem())
-            addSystem(Box2dUpdateSystem(gameSettings.TimeStep, gameSettings.VelIters, gameSettings.PosIters))
+            addSystem(Box2dUpdateSystem(gameSettings.timeStep, gameSettings.velocityIterations, gameSettings.positionIterations))
             addSystem(ChristmasCameraFollowSystem(inject(), 0.1f, true))
             addSystem(SantaControlSystem())
             addSystem(KeyboardInputSystem(inject(), invertX = true, invertY = false))
