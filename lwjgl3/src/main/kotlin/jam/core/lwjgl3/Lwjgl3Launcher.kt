@@ -9,8 +9,8 @@ import jam.core.ChristmasGame
 /** Launches the desktop (LWJGL3) application. */
 fun main() {
     Lwjgl3Application(ChristmasGame(), Lwjgl3ApplicationConfiguration().apply {
-        setTitle("jam-packed-tea-pot")
-        setWindowedMode(640, 480)
+        setTitle("jam-packed-christmas")
+        setWindowedMode(800, 600)
         setWindowIcon(*(arrayOf(128, 64, 32, 16).map { "libgdx$it.png" }.toTypedArray()))
     })
 }

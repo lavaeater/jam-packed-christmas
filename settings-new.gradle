@@ -1,0 +1,1 @@
+include 'gdx-lava', 'lwjgl3', 'core', 'teavm'
