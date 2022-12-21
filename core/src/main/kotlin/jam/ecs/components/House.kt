@@ -6,7 +6,7 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.utils.Pool
 import ktx.ashley.mapperFor
 
-class House : Component, Pool.Poolable {
+class House @JvmOverloads constructor() : Component, Pool.Poolable {
     var floors = (3..8).random()
     var width = 4
     var height = 4

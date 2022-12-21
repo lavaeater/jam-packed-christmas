@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.Pool
 import jam.map.City
 import ktx.ashley.mapperFor
 
-class SamSite: Component, Pool.Poolable {
+class SamSite @JvmOverloads constructor() : Component, Pool.Poolable {
     var city = City()
     override fun reset() {
         city = City()

@@ -5,7 +5,7 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.utils.Pool
 import ktx.ashley.mapperFor
 
-class SamComponent: Component, Pool.Poolable {
+class SamComponent @JvmOverloads constructor() : Component, Pool.Poolable {
     var fuelInSeconds = 3f
 
     override fun reset() {

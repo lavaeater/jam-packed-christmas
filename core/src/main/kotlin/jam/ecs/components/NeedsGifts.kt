@@ -5,7 +5,7 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.utils.Pool
 import ktx.ashley.mapperFor
 
-class NeedsGifts: Component, Pool.Poolable {
+class NeedsGifts @JvmOverloads constructor() : Component, Pool.Poolable {
     override fun reset() {
 
     }
