@@ -22,7 +22,6 @@ import eater.core.GameSettings
 import jam.ecs.components.*
 import jam.ecs.systems.*
 import jam.map.ChristmasMapManager
-import jam.ui.WinterHud
 import ktx.ashley.remove
 import ktx.assets.disposeSafely
 import ktx.box2d.createWorld
@@ -125,7 +124,6 @@ object Context : InjectionContext() {
             bindSingleton(GameSelectScreen(inject()))
             bindSingleton(GameOverScreen(inject()))
             bindSingleton(GameVictoryScreen(inject()))
-//            bindSingleton(WinterHud(inject(), inject()))
             bindSingleton(
                 ChristmasGameScreen(
                     inject(),

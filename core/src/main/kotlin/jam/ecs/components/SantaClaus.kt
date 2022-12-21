@@ -7,7 +7,7 @@ import jam.map.City
 import ktx.ashley.mapperFor
 import ktx.math.vec2
 
-class SantaClaus: Component, Pool.Poolable {
+class SantaClaus @JvmOverloads constructor() : Component, Pool.Poolable {
     var targetCity = City()
     val targetHouses = mutableSetOf<Entity>()
     override fun reset() {
