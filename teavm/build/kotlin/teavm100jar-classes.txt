@@ -1,0 +1,1 @@
+/home/tommie/projects/games/jam-packed-tea-pot/teavm/build/classes/kotlin/main/jam/core/teavm/TeaVMBuilder.class:/home/tommie/projects/games/jam-packed-tea-pot/teavm/build/classes/kotlin/main/jam/core/teavm/TeaVMLauncher.class
