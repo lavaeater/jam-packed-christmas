@@ -3,3 +3,4 @@
 ./linux-build.sh
 ./win-build.sh
 ./mac-build.sh
+./web-build.sh

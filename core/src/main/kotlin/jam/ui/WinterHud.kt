@@ -1,6 +1,7 @@
 package jam.ui
 
 import com.badlogic.ashley.core.Engine
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Widget
@@ -13,6 +14,7 @@ import eater.ui.LavaHud
 import jam.ecs.components.House
 import jam.ecs.components.NeedsGifts
 import jam.ecs.components.SantaClaus
+import jam.ecs.systems.AddChristmasLightsSystem
 import jam.ecs.systems.getChristmasCheer
 import jam.map.ChristmasMapManager
 import ktx.actors.stage
@@ -41,20 +43,23 @@ class WinterHud(batch: PolygonSpriteBatch, private val engine: Engine) : LavaHud
             actors {
                 table {
                     table {
-                        boundLabel({ "$needsPresentsCount left to deliver out of $houseCount houses" }).apply {
+                        boundLabel({ "Houses to visit: $needsPresentsCount / $houseCount" }).apply {
                             setFontScale(3f)
-                        }
+                            align(Align.left)
+                        }.cell(align = Align.left)
                         row()
-                        boundLabel({ "Cities left to visit: ${citiesLeftToVisit.count()} out of ${christmasMapManager.cities.count()}" }).apply {
+                        boundLabel({ "Cities to visit: ${citiesLeftToVisit.count()} / ${christmasMapManager.cities.count()}" }).apply {
                             setFontScale(3f)
-                        }
+                            align(Align.left)
+                        }.cell(align = Align.left)
                         row()
                         table {
-                            label("ChristmasCheer: ").apply {
+                            label("Christmas cheer: ").apply {
                                 setFontScale(3f)
+                                align(Align.left)
                             }
                             boundProgressBar({christmasCheer.current},christmasCheer.min, christmasCheer.max)
-                        }
+                        }.cell(align = Align.left)
 
                         align(Align.left)
                         pad(15f)

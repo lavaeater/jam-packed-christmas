@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.MathUtils.radiansToDegrees
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.BodyDef
 import eater.ai.steering.box2d.Box2dLocation
-import eater.ai.steering.box2d.Box2dSteerable
+import eater.ecs.ashley.components.Box2dSteerable
 import eater.core.engine
 import eater.core.world
 import eater.ecs.ashley.components.*

@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.Pool
 import ktx.ashley.mapperFor
 import ktx.math.vec2
 
-class SnowFlake @JvmOverloads constructor() : Component, Pool.Poolable {
+class SnowFlake : Component, Pool.Poolable {
     var timeToLive = 25f
     var timeToLiveBase = 25f
     val movementVector = vec2(0.15f, 0.15f)
