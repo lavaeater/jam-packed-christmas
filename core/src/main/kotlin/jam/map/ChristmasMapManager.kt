@@ -6,7 +6,7 @@ import com.badlogic.ashley.core.Entity
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.BodyDef
-import eater.ai.ashley.AiComponent
+import eater.ecs.ashley.components.AiComponent
 import eater.ai.ashley.ConsideredAction
 import eater.core.engine
 import eater.core.wholePoints

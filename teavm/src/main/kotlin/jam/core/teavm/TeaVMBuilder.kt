@@ -5,6 +5,7 @@ import com.github.xpenatan.gdx.backends.teavm.TeaBuildConfiguration
 import com.github.xpenatan.gdx.backends.teavm.TeaBuilder
 import com.github.xpenatan.gdx.backends.teavm.plugins.TeaReflectionSupplier
 import com.github.xpenatan.gdx.backends.web.gen.SkipClass
+import eater.ecs.ashley.components.Box2dSteerable
 
 /** Builds the TeaVM/HTML application. */
 @SkipClass
@@ -20,7 +21,9 @@ object TeaVMBuilder {
         }
 
         // Register any classes or packages that require reflection here:
-        // TeaReflectionSupplier.addReflectionClass("jam.core.reflect")
+        TeaReflectionSupplier.addReflectionClass("eater.ecs.ashley.components")
+        TeaReflectionSupplier.addReflectionClass("jam.ecs.components")
+        TeaReflectionSupplier.addReflectionClass(Box2dSteerable::class.java)
 
         val tool = TeaBuilder.config(teaBuildConfiguration)
         tool.mainClass = "jam.core.teavm.TeaVMLauncher"

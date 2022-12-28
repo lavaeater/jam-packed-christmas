@@ -19,7 +19,8 @@ class ChristmasGameScreen(
     batch: PolygonSpriteBatch,
     camera: OrthographicCamera,
     private val gameSettings: GameSettings,
-    private val mapManager: ChristmasMapManager
+    private val mapManager: ChristmasMapManager,
+    private val winterHud: WinterHud
 ) : GameScreen(christmasGame, engine, viewPort, batch, camera) {
 
     init {
@@ -30,12 +31,12 @@ class ChristmasGameScreen(
 
     override fun render(delta: Float) {
         super.render(delta)
-        //winterHud.render(delta)
+        winterHud.render(delta)
     }
 
     override fun resize(width: Int, height: Int) {
         super.resize(width, height)
-        //winterHud.resize(width, height)
+        winterHud.resize(width, height)
     }
 
     override fun show() {

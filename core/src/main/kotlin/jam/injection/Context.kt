@@ -28,6 +28,7 @@ import ktx.box2d.createWorld
 import space.earlygrey.shapedrawer.ShapeDrawer
 import jam.core.getContactType
 import jam.screens.*
+import jam.ui.WinterHud
 import ktx.ashley.allOf
 import ktx.math.vec2
 import snowFlake
@@ -124,8 +125,10 @@ object Context : InjectionContext() {
             bindSingleton(GameSelectScreen(inject()))
             bindSingleton(GameOverScreen(inject()))
             bindSingleton(GameVictoryScreen(inject()))
+            bindSingleton(WinterHud(inject(), inject()))
             bindSingleton(
                 ChristmasGameScreen(
+                    inject(),
                     inject(),
                     inject(),
                     inject(),
