@@ -1,15 +1,12 @@
 package jam.injection
 
-import com.badlogic.gdx.Audio
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.audio.AudioDevice
-import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.NinePatch
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.scenes.scene2d.ui.Skin
-import eater.injection.InjectionContext.Companion.inject
 import eater.core.GameSettings
+import eater.injection.InjectionContext.Companion.inject
 import ktx.assets.DisposableContainer
 import ktx.assets.DisposableRegistry
 import ktx.assets.disposeSafely
